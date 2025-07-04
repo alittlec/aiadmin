@@ -261,11 +261,19 @@
 
             // --- Gemini API Simulations ---
             const api = {
-                async callGeminiForSwapSuggestions(shiftTitle) { /* ... existing code ... */ },
-                async callGeminiForHandover(notes) { /* ... existing code ... */ },
-                async callGeminiForOpNote(notes) { /* ... existing code ... */ },
-                async callGeminiForMdtPrep(patientList) { /* ... existing code ... */ },
-                async callGeminiForChat(message) { /* ... existing code ... */ }
+                async callGeminiForSwapSuggestions(shiftTitle) { return new Promise(resolve => setTimeout(() => resolve({ candidates: [{ name: "Dr. Chloe Davies", justification: "Best match. She has an on-call shift next week you could take in return.", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" }, { name: "Dr. Liam Evans", justification: "Possible option. He's a different grade but might be willing to trade for his Long Day.", photo: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" }] }), 1500)); },
+                async callGeminiForHandover(notes) { return new Promise(resolve => setTimeout(() => resolve({ handover: `<h4 class="font-bold text-gray-800">Situation</h4><p class="mb-2 text-gray-600">Handover for patient in Bed 5, Mr. Smith, who experienced an episode of hypotension at 16:00.</p><h4 class="font-bold text-gray-800">Background</h4><p class="mb-2 text-gray-600">Mr. Smith is a 78-year-old male, post-op Day 2 for a right total hip replacement.</p><h4 class="font-bold text-gray-800">Assessment</h4><p class="mb-2 text-gray-600">BP dropped to 85/50. Responded well to a 500ml fluid bolus. Now stable, BP 110/70. No other concerns.</p><h4 class="font-bold text-gray-800">Recommendation</h4><p class="text-gray-600">Please continue routine post-op monitoring. Check U&Es in the morning. Also, please note Ms. Jones in Bed 8 is awaiting ortho review and a new ankle fracture admission is expected from ED shortly.</p>` }), 1500)); },
+                async callGeminiForOpNote(notes) { return new Promise(resolve => setTimeout(() => resolve({ op_note: `<h4 class="font-bold text-gray-800">Procedure</h4><p class="mb-2 text-gray-600">Right Total Hip Replacement</p><h4 class="font-bold text-gray-800">Surgeon</h4><p class="mb-2 text-gray-600">Dr. Anya Sharma</p><h4 class="font-bold text-gray-800">Findings</h4><p class="mb-2 text-gray-600">Severe osteoarthritis of the right hip.</p><h4 class="font-bold text-gray-800">Procedure Details</h4><p class="mb-2 text-gray-600">A standard posterior approach was used. A size 5 cup and 36mm head were implanted. All components were stable on testing. No intra-operative complications.</p><h4 class="font-bold text-gray-800">Post-operative Plan</h4><p class="text-gray-600">Routine post-op care. Weight-bearing as tolerated. Follow up in clinic in 6 weeks.</p>` }), 1500)); },
+                async callGeminiForMdtPrep(patientList) { return new Promise(resolve => setTimeout(() => resolve({ mdt_summary: `<div class="space-y-4"><div class="ios-list-item p-4"><h4 class="font-bold text-gray-800">1. John Smith, 78M</h4><p class="text-sm text-gray-600 mt-1"><strong>Admission:</strong> Fall, #NOF left hip.<br><strong>Imaging:</strong> X-ray shows displaced intracapsular fracture. CT chest clear.<br><strong>Plan:</strong> For hemiarthroplasty tomorrow.</p></div><div class="ios-list-item p-4"><h4 class="font-bold text-gray-800">2. Alice Jones, 52F</h4><p class="text-sm text-gray-600 mt-1"><strong>Admission:</strong> Polytrauma post-RTA.<br><strong>Imaging:</strong> CT shows distal radius # and L pubic rami #.<br><strong>Plan:</strong> Discuss for ORIF vs. conservative management of wrist.</p></div></div>` }), 1500)); },
+                async callGeminiForChat(message) {
+                    return new Promise(resolve => setTimeout(() => {
+                        let responseText = "I can help with rota questions, handover notes, and finding on-call contacts. How can I assist you?";
+                        if (message.toLowerCase().includes("on call for cardiology")) { responseText = "Accessing the on-call directory... The consultant for Cardiology is Dr. Evans. I can bleep him for you if you'd like."; } 
+                        else if (message.toLowerCase().includes("summarize my day")) { responseText = "Of course. Today you had a Theatre AM session followed by a Clinic PM session. Both are marked as completed. Would you like me to help draft a handover or op note?"; }
+                        else if (message.toLowerCase().includes("draft an op note") || message.toLowerCase().includes("prep the mdt list")) { responseText = "I can help with that. You can find buttons for those tasks on the 'My Rota' screen."; }
+                        resolve({ response: responseText });
+                    }, 1500));
+                }
             };
 
             // --- UI Logic ---
@@ -301,22 +309,81 @@
                 if(targetBtn) targetBtn.classList.add('active');
             }
             
-            function addMessageToChat(message, sender) { /* ... existing code ... */ }
-            function addTypingIndicator() { /* ... existing code ... */ }
-            function removeTypingIndicator() { /* ... existing code ... */ }
-            async function handleSendMessage(message) { /* ... existing code ... */ }
-            function simulateDictation(btn, textarea, sampleText) { /* ... existing code ... */ }
+            function addMessageToChat(message, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `w-full flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+                messageDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl ${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}">${message}</div>`;
+                ui.chat.container.appendChild(messageDiv);
+                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
+            }
+
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.className = 'w-full flex justify-start';
+                typingDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl bg-gray-200 text-gray-800"><div class="flex items-center space-x-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div></div></div>`;
+                ui.chat.container.appendChild(typingDiv);
+                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
+            }
+            
+            function removeTypingIndicator() {
+                document.getElementById('typing-indicator')?.remove();
+            }
+
+            async function handleSendMessage(message) {
+                if (!message || message.trim() === '') return;
+                addMessageToChat(message, 'user');
+                ui.chat.input.value = '';
+                ui.chat.suggestionChips.classList.add('hidden');
+                addTypingIndicator();
+                const result = await api.callGeminiForChat(message);
+                removeTypingIndicator();
+                addMessageToChat(result.response, 'ai');
+            }
+            
+            function simulateDictation(btn, textarea, sampleText) {
+                const icon = btn.querySelector('i');
+                icon.classList.remove('ph-microphone');
+                icon.classList.add('ph-waveform', 'text-red-500', 'animate-pulse');
+                btn.disabled = true;
+                setTimeout(() => {
+                    textarea.value = sampleText;
+                    icon.classList.add('ph-microphone');
+                    icon.classList.remove('ph-waveform', 'text-red-500', 'animate-pulse');
+                    btn.disabled = false;
+                }, 2000);
+            }
 
             // --- Event Listeners ---
             ui.tabItems.forEach(tab => tab.addEventListener('click', (e) => { e.preventDefault(); switchScreen(tab.dataset.target); }));
             ui.viewSwitcherBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); switchRotaView(btn.dataset.view); }));
             
-            ui.shiftCards.forEach(card => card.addEventListener('click', () => { /* ... existing code ... */ }));
+            ui.shiftCards.forEach(card => card.addEventListener('click', () => {
+                ui.modals.swap.title.textContent = card.dataset.shiftTitle;
+                ui.modals.swap.details.textContent = card.dataset.shiftDetails;
+                ui.modals.swap.suggestions.innerHTML = '';
+                ui.modals.swap.findBtn.style.display = 'flex';
+                ui.modals.swap.findBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨';
+                ui.modals.swap.findBtn.disabled = false;
+                openModal(ui.modals.swap);
+            }));
             
             Object.values(ui.modals).forEach(modal => modal.closeBtn?.addEventListener('click', () => closeModal(modal)));
             
-            ui.createHandoverBtn.addEventListener('click', () => { /* ... existing code ... */ });
-            ui.createOpNoteBtn.addEventListener('click', () => { /* ... existing code ... */ });
+            ui.createHandoverBtn.addEventListener('click', () => {
+                ui.modals.handover.outputContainer.classList.add('hidden');
+                ui.modals.handover.input.value = '';
+                ui.modals.handover.generateBtn.disabled = false;
+                ui.modals.handover.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(ui.modals.handover);
+            });
+            ui.createOpNoteBtn.addEventListener('click', () => {
+                ui.modals.opNote.outputContainer.classList.add('hidden');
+                ui.modals.opNote.input.value = '';
+                ui.modals.opNote.generateBtn.disabled = false;
+                ui.modals.opNote.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(ui.modals.opNote);
+            });
             ui.mdtCard.addEventListener('click', () => {
                 ui.modals.mdt.outputContainer.classList.add('hidden');
                 ui.modals.mdt.patientList.innerHTML = `<div class="ios-list-item p-4"><p class="font-semibold">John Smith</p><p class="text-xs text-gray-500">CHI: 1234567890</p></div><div class="ios-list-item p-4"><p class="font-semibold">Alice Jones</p><p class="text-xs text-gray-500">CHI: 0987654321</p></div>`;
