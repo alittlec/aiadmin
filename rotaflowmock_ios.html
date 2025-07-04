@@ -161,10 +161,13 @@
                 <main class="flex-1 overflow-y-auto p-6 pt-2 space-y-6">
                     <div id="list-view" class="rota-view view-active">
                         <div class="bg-white p-4 rounded-2xl shadow-md"><h2 class="font-bold text-lg text-gray-800 mb-3">Today, July 15</h2><div class="space-y-3"><div class="flex items-center p-3 rounded-xl bg-blue-50"><div class="p-2 bg-blue-100 rounded-lg mr-4"><i class="ph-bold ph-knife text-blue-600 text-xl"></i></div><div><p class="font-semibold text-blue-800">Theatre AM</p><p class="text-sm text-blue-600">08:00 - 12:00  •  Completed</p></div></div><div class="flex items-center p-3 rounded-xl bg-blue-50"><div class="p-2 bg-blue-100 rounded-lg mr-4"><i class="ph-bold ph-stethoscope text-blue-600 text-xl"></i></div><div><p class="font-semibold text-blue-800">Clinic PM</p><p class="text-sm text-blue-600">13:00 - 17:00  •  Completed</p></div></div></div><div class="flex gap-2 mt-4"><button id="create-op-note-btn" class="w-full py-2.5 bg-gray-800 text-white font-bold rounded-xl flex items-center justify-center text-sm shadow-lg"><i class="ph-bold ph-sparkle mr-2"></i> Create Op Note ✨</button><button id="create-handover-btn" class="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center text-sm shadow-lg shadow-indigo-500/50"><i class="ph-bold ph-note-pencil mr-2"></i> Handover</button></div></div>
-                        <div><h2 class="font-bold text-lg text-gray-800 px-2 mt-6 mb-2">Upcoming</h2><div class="bg-white p-4 rounded-2xl shadow-md space-y-4"><div class="shift-card cursor-pointer" data-shift-title="On-Call (Night)" data-shift-details="Wednesday, 16 July • 20:00 - 08:00"><p class="font-semibold text-gray-500 text-sm mb-2">Wednesday, 16 July</p><div class="flex items-center p-3 rounded-xl bg-gray-100"><div class="p-2 bg-gray-200 rounded-lg mr-4"><i class="ph-bold ph-bed text-gray-600 text-xl"></i></div><div><p class="font-semibold text-gray-700">On-Call (Night)</p><p class="text-sm text-gray-500">20:00 - 08:00</p></div></div></div><hr class="border-gray-100"/><div><p class="font-semibold text-gray-500 text-sm mb-2">Thursday, 17 July</p><div class="flex items-center p-3 rounded-xl bg-green-50"><div class="p-2 bg-green-100 rounded-lg mr-4"><i class="ph-bold ph-airplane-takeoff text-green-600 text-xl"></i></div><div><p class="font-semibold text-green-800">Annual Leave</p><p class="text-sm text-green-600">All Day</p></div></div></div></div></div>
+                        <div><h2 class="font-bold text-lg text-gray-800 px-2 mt-6 mb-2">Upcoming</h2><div class="bg-white p-4 rounded-2xl shadow-md space-y-4">
+                            <div id="mdt-card" class="cursor-pointer"><p class="font-semibold text-gray-500 text-sm mb-2">Wednesday, 16 July</p><div class="flex items-center p-3 rounded-xl bg-purple-50"><div class="p-2 bg-purple-100 rounded-lg mr-4"><i class="ph-bold ph-users-three text-purple-600 text-xl"></i></div><div><p class="font-semibold text-purple-800">Trauma MDT Meeting</p><p class="text-sm text-purple-600">14:00 - 15:00</p></div></div></div><hr class="border-gray-100"/>
+                            <div class="shift-card cursor-pointer" data-shift-title="On-Call (Night)" data-shift-details="Wednesday, 16 July • 20:00 - 08:00"><p class="font-semibold text-gray-500 text-sm mb-2">Wednesday, 16 July</p><div class="flex items-center p-3 rounded-xl bg-gray-100"><div class="p-2 bg-gray-200 rounded-lg mr-4"><i class="ph-bold ph-bed text-gray-600 text-xl"></i></div><div><p class="font-semibold text-gray-700">On-Call (Night)</p><p class="text-sm text-gray-500">20:00 - 08:00</p></div></div></div>
+                        </div></div>
                     </div>
-                    <div id="week-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 14 - 27</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm"><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div></div></div>
-                    <div id="month-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 2025</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm h-full"><div class="p-2 border-r border-b text-gray-400"><p>30</p></div><div class="p-2 border-r border-b"><p>1</p></div><div class="p-2 border-r border-b"><p>2</p></div><div class="p-2 border-r border-b"><p>3</p></div><div class="p-2 border-r border-b"><p>4</p></div><div class="p-2 border-r border-b bg-gray-100"><p>5</p></div><div class="p-2 border-b bg-gray-100"><p>6</p></div><div class="p-2 border-r border-b"><p>7</p></div><div class="p-2 border-r border-b"><p>8</p></div><div class="p-2 border-r border-b"><p>9</p></div><div class="p-2 border-r border-b"><p>10</p></div><div class="p-2 border-r border-b"><p>11</p></div><div class="p-2 border-r border-b bg-gray-100"><p>12</p></div><div class="p-2 border-b bg-gray-100"><p>13</p></div><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div><div class="p-2 border-r border-b"><p>28</p></div><div class="p-2 border-r border-b"><p>29</p></div><div class="p-2 border-r border-b"><p>30</p></div><div class="p-2 border-r border-b"><p>31</p></div></div></div>
+                    <div id="week-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 14 - 27</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm"><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div></div></div>
+                    <div id="month-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 2025</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm h-full"><div class="p-2 border-r border-b text-gray-400"><p>30</p></div><div class="p-2 border-r border-b"><p>1</p></div><div class="p-2 border-r border-b"><p>2</p></div><div class="p-2 border-r border-b"><p>3</p></div><div class="p-2 border-r border-b"><p>4</p></div><div class="p-2 border-r border-b bg-gray-100"><p>5</p></div><div class="p-2 border-b bg-gray-100"><p>6</p></div><div class="p-2 border-r border-b"><p>7</p></div><div class="p-2 border-r border-b"><p>8</p></div><div class="p-2 border-r border-b"><p>9</p></div><div class="p-2 border-r border-b"><p>10</p></div><div class="p-2 border-r border-b"><p>11</p></div><div class="p-2 border-r border-b bg-gray-100"><p>12</p></div><div class="p-2 border-b bg-gray-100"><p>13</p></div><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div><div class="p-2 border-r border-b"><p>28</p></div><div class="p-2 border-r border-b"><p>29</p></div><div class="p-2 border-r border-b"><p>30</p></div><div class="p-2 border-r border-b"><p>31</p></div></div></div>
                 </main>
             </div>
 
@@ -175,7 +178,7 @@
                 <footer class="p-4 pt-0 bg-gray-100 border-t">
                     <div id="suggestion-chips" class="pb-3 flex-wrap gap-2 hidden">
                         <button class="suggestion-chip text-sm text-blue-700 bg-blue-100 font-semibold px-3 py-1.5 rounded-full">Summarize my day</button>
-                        <button class="suggestion-chip text-sm text-blue-700 bg-blue-100 font-semibold px-3 py-1.5 rounded-full">Draft an op note</button>
+                        <button class="suggestion-chip text-sm text-blue-700 bg-blue-100 font-semibold px-3 py-1.5 rounded-full">Prep the MDT list</button>
                     </div>
                     <div class="flex items-center bg-white rounded-xl p-2">
                         <input id="chat-input" type="text" placeholder="Ask anything..." class="flex-1 bg-transparent border-none focus:ring-0">
@@ -228,60 +231,83 @@
         <div id="shift-details-modal" class="modal-overlay"><div class="modal-content"><h2 id="modal-shift-title" class="font-bold text-xl text-gray-800 mb-1"></h2><p id="modal-shift-details" class="text-gray-600 text-sm mb-4"></p><div id="ai-swap-suggestions" class="space-y-3"></div><button id="find-swap-btn" class="w-full mt-4 py-3 bg-blue-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨</button><button id="close-swap-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Cancel</button></div></div>
         <div id="handover-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Handover Note</h2><p class="text-gray-600 text-sm mb-4">Jot down key points or dictate. AI will format it into a professional SBAR note.</p><div class="relative"><textarea id="handover-input" class="w-full h-24 p-3 pr-12 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Patient in Bed 5, Mr. Smith, had low BP..."></textarea><button id="dictate-handover-btn" class="absolute right-3 top-3 text-gray-400 hover:text-blue-600"><i class="ph-bold ph-microphone text-2xl"></i></button></div><button id="generate-handover-btn" class="w-full mt-4 py-3 bg-indigo-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="handover-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="handover-output"></div></div><button id="close-handover-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
         <div id="op-note-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Operation Note</h2><p class="text-gray-600 text-sm mb-4">List the key details or dictate. AI will draft the full op note.</p><div class="relative"><textarea id="op-note-input" class="w-full h-24 p-3 pr-12 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Right total hip replacement..."></textarea><button id="dictate-op-note-btn" class="absolute right-3 top-3 text-gray-400 hover:text-blue-600"><i class="ph-bold ph-microphone text-2xl"></i></button></div><button id="generate-op-note-btn" class="w-full mt-4 py-3 bg-gray-800 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="op-note-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="op-note-output"></div></div><button id="close-op-note-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
+        <div id="mdt-prep-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Prepare MDT List</h2><p class="text-gray-600 text-sm mb-4">Enter patient identifiers. AI will fetch and summarize the required case information.</p><textarea id="mdt-input" class="w-full h-24 p-3 bg-white rounded-xl border border-gray-200 text-sm" placeholder="e.g., J. Smith (CHI: 123456), A. Jones (CHI: 789012)"></textarea><button id="generate-mdt-btn" class="w-full mt-4 py-3 bg-purple-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Prepare List with AI ✨</button><div id="mdt-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="mdt-output"></div></div><button id="close-mdt-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const tabItems = document.querySelectorAll('.tab-item');
-            const screens = document.querySelectorAll('.screen');
-            const shiftCards = document.querySelectorAll('.shift-card');
-            const shiftDetailsModal = document.getElementById('shift-details-modal');
-            const closeModalBtn = document.getElementById('close-swap-modal-btn');
-            const findSwapBtn = document.getElementById('find-swap-btn');
-            const modalShiftTitle = document.getElementById('modal-shift-title');
-            const modalShiftDetails = document.getElementById('modal-shift-details');
-            const aiSwapSuggestions = document.getElementById('ai-swap-suggestions');
-            const viewSwitcherBtns = document.querySelectorAll('.view-switcher-btn');
-            const rotaViews = document.querySelectorAll('.rota-view');
-            const createHandoverBtn = document.getElementById('create-handover-btn');
-            const handoverModal = document.getElementById('handover-modal');
-            const closeHandoverModalBtn = document.getElementById('close-handover-modal-btn');
-            const generateHandoverBtn = document.getElementById('generate-handover-btn');
-            const handoverInput = document.getElementById('handover-input');
-            const handoverOutputContainer = document.getElementById('handover-output-container');
-            const handoverOutput = document.getElementById('handover-output');
-            const createOpNoteBtn = document.getElementById('create-op-note-btn');
-            const opNoteModal = document.getElementById('op-note-modal');
-            const closeOpNoteModalBtn = document.getElementById('close-op-note-modal-btn');
-            const generateOpNoteBtn = document.getElementById('generate-op-note-btn');
-            const opNoteInput = document.getElementById('op-note-input');
-            const opNoteOutputContainer = document.getElementById('op-note-output-container');
-            const opNoteOutput = document.getElementById('op-note-output');
-            const chatContainer = document.getElementById('chat-container');
-            const chatInput = document.getElementById('chat-input');
-            const sendChatBtn = document.getElementById('send-chat-btn');
-            const suggestionChipsContainer = document.getElementById('suggestion-chips');
-            const dictateHandoverBtn = document.getElementById('dictate-handover-btn');
-            const dictateOpNoteBtn = document.getElementById('dictate-op-note-btn');
+            const ui = {
+                screens: document.querySelectorAll('.screen'),
+                tabItems: document.querySelectorAll('.tab-item'),
+                viewSwitcherBtns: document.querySelectorAll('.view-switcher-btn'),
+                rotaViews: document.querySelectorAll('.rota-view'),
+                shiftCards: document.querySelectorAll('.shift-card'),
+                mdtCard: document.getElementById('mdt-card'),
+                createHandoverBtn: document.getElementById('create-handover-btn'),
+                createOpNoteBtn: document.getElementById('create-op-note-btn'),
+                chat: {
+                    container: document.getElementById('chat-container'),
+                    input: document.getElementById('chat-input'),
+                    sendBtn: document.getElementById('send-chat-btn'),
+                    suggestionChips: document.getElementById('suggestion-chips'),
+                },
+                modals: {
+                    swap: {
+                        el: document.getElementById('shift-details-modal'),
+                        closeBtn: document.getElementById('close-swap-modal-btn'),
+                        findBtn: document.getElementById('find-swap-btn'),
+                        title: document.getElementById('modal-shift-title'),
+                        details: document.getElementById('modal-shift-details'),
+                        suggestions: document.getElementById('ai-swap-suggestions'),
+                    },
+                    handover: {
+                        el: document.getElementById('handover-modal'),
+                        closeBtn: document.getElementById('close-handover-modal-btn'),
+                        generateBtn: document.getElementById('generate-handover-btn'),
+                        input: document.getElementById('handover-input'),
+                        outputContainer: document.getElementById('handover-output-container'),
+                        output: document.getElementById('handover-output'),
+                        dictateBtn: document.getElementById('dictate-handover-btn'),
+                    },
+                    opNote: {
+                        el: document.getElementById('op-note-modal'),
+                        closeBtn: document.getElementById('close-op-note-modal-btn'),
+                        generateBtn: document.getElementById('generate-op-note-btn'),
+                        input: document.getElementById('op-note-input'),
+                        outputContainer: document.getElementById('op-note-output-container'),
+                        output: document.getElementById('op-note-output'),
+                        dictateBtn: document.getElementById('dictate-op-note-btn'),
+                    },
+                    mdt: {
+                        el: document.getElementById('mdt-prep-modal'),
+                        closeBtn: document.getElementById('close-mdt-modal-btn'),
+                        generateBtn: document.getElementById('generate-mdt-btn'),
+                        input: document.getElementById('mdt-input'),
+                        outputContainer: document.getElementById('mdt-output-container'),
+                        output: document.getElementById('mdt-output'),
+                    }
+                }
+            };
 
             // --- Gemini API Simulations ---
-            async function callGeminiForSwapSuggestions(shiftTitle) { /* ... existing code ... */ }
-            async function callGeminiForHandover(notes) { /* ... existing code ... */ }
-            async function callGeminiForOpNote(notes) { /* ... existing code ... */ }
-            async function callGeminiForChat(message) { /* ... existing code ... */ }
+            const api = {
+                async callGeminiForSwapSuggestions(shiftTitle) { /* ... existing code ... */ },
+                async callGeminiForHandover(notes) { /* ... existing code ... */ },
+                async callGeminiForOpNote(notes) { /* ... existing code ... */ },
+                async callGeminiForMdtPrep(patientList) { /* ... existing code ... */ },
+                async callGeminiForChat(message) { /* ... existing code ... */ }
+            };
 
             // --- UI Logic ---
-            const openModal = (modal) => modal.classList.add('visible');
-            const closeModal = (modal) => modal.classList.remove('visible');
+            const openModal = (modal) => modal.el.classList.add('visible');
+            const closeModal = (modal) => modal.el.classList.remove('visible');
 
             function switchScreen(targetId) {
-                const activeScreen = document.querySelector('.screen.active');
-                if (activeScreen && activeScreen.id === targetId) return;
-                screens.forEach(screen => screen.classList.remove('active'));
+                ui.screens.forEach(screen => screen.classList.remove('active'));
                 document.getElementById(targetId)?.classList.add('active');
-                tabItems.forEach(item => {
+                ui.tabItems.forEach(item => {
                     const icon = item.querySelector('i');
-                    if(item.dataset.target === targetId) {
+                    if (item.dataset.target === targetId) {
                         item.classList.add('active');
                         item.classList.remove('text-gray-500');
                         icon?.classList.add('ph-fill');
@@ -293,55 +319,50 @@
                 });
             }
 
-            tabItems.forEach(tab => tab.addEventListener('click', (e) => { e.preventDefault(); switchScreen(tab.dataset.target); }));
-            viewSwitcherBtns.forEach(btn => btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetViewId = btn.dataset.view;
-                rotaViews.forEach(view => view.classList.remove('view-active'));
-                document.getElementById(targetViewId)?.classList.add('view-active');
-                viewSwitcherBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }));
+            function switchRotaView(targetId) {
+                ui.rotaViews.forEach(view => view.classList.remove('view-active'));
+                document.getElementById(targetId)?.classList.add('view-active');
+                ui.viewSwitcherBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector(`.view-switcher-btn[data-view="${targetId}"]`)?.classList.add('active');
+            }
             
-            shiftCards.forEach(card => card.addEventListener('click', () => {
-                modalShiftTitle.textContent = card.dataset.shiftTitle;
-                modalShiftDetails.textContent = card.dataset.shiftDetails;
-                aiSwapSuggestions.innerHTML = '';
-                findSwapBtn.style.display = 'flex';
-                findSwapBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨';
-                findSwapBtn.disabled = false;
-                openModal(shiftDetailsModal);
-            }));
+            function addMessageToChat(message, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `w-full flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+                messageDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl ${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}">${message}</div>`;
+                ui.chat.container.appendChild(messageDiv);
+                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
+            }
+
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.className = 'w-full flex justify-start';
+                typingDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl bg-gray-200 text-gray-800"><div class="flex items-center space-x-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div></div></div>`;
+                ui.chat.container.appendChild(typingDiv);
+                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
+            }
             
-            closeModalBtn.addEventListener('click', () => closeModal(shiftDetailsModal));
-            createHandoverBtn.addEventListener('click', () => {
-                handoverOutputContainer.classList.add('hidden');
-                handoverInput.value = '';
-                generateHandoverBtn.disabled = false;
-                generateHandoverBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
-                openModal(handoverModal);
-            });
-            closeHandoverModalBtn.addEventListener('click', () => closeModal(handoverModal));
-            createOpNoteBtn.addEventListener('click', () => {
-                opNoteOutputContainer.classList.add('hidden');
-                opNoteInput.value = '';
-                generateOpNoteBtn.disabled = false;
-                generateOpNoteBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
-                openModal(opNoteModal);
-            });
-            closeOpNoteModalBtn.addEventListener('click', () => closeModal(opNoteModal));
+            function removeTypingIndicator() {
+                document.getElementById('typing-indicator')?.remove();
+            }
 
-            findSwapBtn.addEventListener('click', async () => { /* ... existing code ... */ });
-            generateHandoverBtn.addEventListener('click', async () => { /* ... existing code ... */ });
-            generateOpNoteBtn.addEventListener('click', async () => { /* ... existing code ... */ });
-
-            // --- Dictation Simulation ---
+            async function handleSendMessage(message) {
+                if (!message || message.trim() === '') return;
+                addMessageToChat(message, 'user');
+                ui.chat.input.value = '';
+                ui.chat.suggestionChips.classList.add('hidden');
+                addTypingIndicator();
+                const result = await api.callGeminiForChat(message);
+                removeTypingIndicator();
+                addMessageToChat(result.response, 'ai');
+            }
+            
             function simulateDictation(btn, textarea, sampleText) {
                 const icon = btn.querySelector('i');
                 icon.classList.remove('ph-microphone');
                 icon.classList.add('ph-waveform', 'text-red-500', 'animate-pulse');
                 btn.disabled = true;
-
                 setTimeout(() => {
                     textarea.value = sampleText;
                     icon.classList.add('ph-microphone');
@@ -350,29 +371,58 @@
                 }, 2000);
             }
 
-            dictateHandoverBtn.addEventListener('click', () => {
-                simulateDictation(dictateHandoverBtn, handoverInput, "Patient in Bed 5, Mr. Smith, had an episode of low blood pressure at 4 p.m. but responded well to fluids. Also, Ms. Jones in Bed 8 is still awaiting her ortho review, and there's a new ankle fracture in the Emergency Department to be aware of.");
+            // --- Event Listeners ---
+            ui.tabItems.forEach(tab => tab.addEventListener('click', (e) => { e.preventDefault(); switchScreen(tab.dataset.target); }));
+            ui.viewSwitcherBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); switchRotaView(btn.dataset.view); }));
+            
+            ui.shiftCards.forEach(card => card.addEventListener('click', () => {
+                ui.modals.swap.title.textContent = card.dataset.shiftTitle;
+                ui.modals.swap.details.textContent = card.dataset.shiftDetails;
+                ui.modals.swap.suggestions.innerHTML = '';
+                ui.modals.swap.findBtn.style.display = 'flex';
+                ui.modals.swap.findBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨';
+                ui.modals.swap.findBtn.disabled = false;
+                openModal(ui.modals.swap);
+            }));
+            
+            ui.createHandoverBtn.addEventListener('click', () => {
+                ui.modals.handover.outputContainer.classList.add('hidden');
+                ui.modals.handover.input.value = '';
+                ui.modals.handover.generateBtn.disabled = false;
+                ui.modals.handover.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(ui.modals.handover);
+            });
+            
+            ui.createOpNoteBtn.addEventListener('click', () => {
+                ui.modals.opNote.outputContainer.classList.add('hidden');
+                ui.modals.opNote.input.value = '';
+                ui.modals.opNote.generateBtn.disabled = false;
+                ui.modals.opNote.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(ui.modals.opNote);
             });
 
-            dictateOpNoteBtn.addEventListener('click', () => {
-                simulateDictation(dictateOpNoteBtn, opNoteInput, "Right total hip replacement using a posterior approach. A size 5 cup and a 36 millimeter head were implanted. There were no complications.");
+            ui.mdtCard.addEventListener('click', () => {
+                ui.modals.mdt.outputContainer.classList.add('hidden');
+                ui.modals.mdt.input.value = '';
+                ui.modals.mdt.generateBtn.disabled = false;
+                ui.modals.mdt.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Prepare List with AI ✨';
+                openModal(ui.modals.mdt);
             });
 
-            // --- Chat Logic ---
-            function addMessageToChat(message, sender) { /* ... existing code ... */ }
-            function addTypingIndicator() { /* ... existing code ... */ }
-            function removeTypingIndicator() { /* ... existing code ... */ }
-            async function handleSendMessage(message) { /* ... existing code ... */ }
+            Object.values(ui.modals).forEach(modal => modal.closeBtn?.addEventListener('click', () => closeModal(modal)));
+            
+            ui.modals.handover.dictateBtn.addEventListener('click', () => simulateDictation(ui.modals.handover.dictateBtn, ui.modals.handover.input, "Patient in Bed 5, Mr. Smith, had an episode of low blood pressure at 4 p.m. but responded well to fluids. Also, Ms. Jones in Bed 8 is still awaiting her ortho review, and there's a new ankle fracture in the Emergency Department to be aware of."));
+            ui.modals.opNote.dictateBtn.addEventListener('click', () => simulateDictation(ui.modals.opNote.dictateBtn, ui.modals.opNote.input, "Right total hip replacement using a posterior approach. A size 5 cup and a 36 millimeter head were implanted. There were no complications."));
 
-            sendChatBtn.addEventListener('click', () => handleSendMessage(chatInput.value));
-            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(chatInput.value); });
+            ui.chat.sendBtn.addEventListener('click', () => handleSendMessage(ui.chat.input.value));
+            ui.chat.input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(ui.chat.input.value); });
             document.querySelectorAll('.suggestion-chip').forEach(chip => chip.addEventListener('click', () => handleSendMessage(chip.textContent)));
 
-            // Initial setup
+            // --- Initial Setup ---
             addMessageToChat("Hello Dr. Sharma. How can I help you today?", 'ai');
-            suggestionChipsContainer.classList.remove('hidden');
+            ui.chat.suggestionChips.classList.remove('hidden');
             switchScreen('my-rota-screen');
-            document.querySelector('.view-switcher-btn[data-view="list-view"]')?.click();
+            switchRotaView('list-view');
         });
     </script>
 </body>
