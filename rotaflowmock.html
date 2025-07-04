@@ -3,246 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RotaFlow UI Mockup (Responsive)</title>
+    <title>RotaFlow - iOS App Mockup (AI-Enhanced)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/css/phosphor.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .sidebar {
-            background-color: #0c2444;
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, minmax(0, 1fr));
-            grid-auto-rows: minmax(120px, auto);
-            border-left: 1px solid #e5e7eb;
-        }
-        .calendar-day {
-            border-right: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 4px;
-        }
-        .calendar-header {
-            border-right: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            border-top: 1px solid #e5e7eb;
-            font-weight: 600;
-            padding: 8px 4px;
-            background-color: #f8fafc;
-        }
-        .shift-card {
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-bottom: 3px;
-            color: white;
-            cursor: pointer;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .shift-consultant { background-color: #0369a1; } /* Dark Blue */
-        .shift-registrar { background-color: #0ea5e9; } /* Blue */
-        .shift-nurse { background-color: #10b981; } /* Green */
-        .shift-gap {
-            background-color: #fee2e2;
-            border: 1px dashed #ef4444;
-            color: #ef4444;
+        .ios-frame {
+            width: 100%;
+            max-width: 420px;
+            height: 880px;
+            background: #f7f8fc;
+            border: 12px solid black;
+            border-radius: 50px;
+            box-shadow: 0 20px 60px -10px rgba(0,0,0,0.3);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
-        .on-leave {
-            background-color: #f3f4f6;
-            color: #6b7280;
-            font-style: italic;
+        .ios-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 30px;
+            background-color: black;
+            border-radius: 0 0 16px 16px;
+            z-index: 50;
+        }
+        .ios-header {
+            padding: 60px 24px 16px 24px;
+            background-color: #f7f8fc;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .ios-tab-bar {
+            border-top: 1px solid #e5e7eb;
+            background-color: rgba(252, 252, 252, 0.95);
+            backdrop-filter: blur(15px);
+        }
+        .tab-item.active {
+            color: #007aff; /* iOS Blue */
+        }
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+        }
+        .screen.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        .ios-list-group {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .ios-list-item {
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .ios-list-item:last-child {
+            border-bottom: none;
+        }
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 100;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #f7f8fc;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: 40px;
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: translateY(0);
+        }
+        .rota-view { display: none; }
+        .rota-view.view-active { display: block; }
+        .view-switcher-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+        .view-switcher-btn.active {
+            background-color: white;
+            color: #007aff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        /* Mobile-first adjustments */
+        @media (max-width: 640px) {
+            body {
+                padding: 0;
+                background-color: #f7f8fc;
+            }
+            .ios-frame {
+                max-width: none;
+                height: 100vh;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .ios-notch {
+                display: none;
+            }
+            .ios-header {
+                 padding-top: env(safe-area-inset-top, 20px);
+            }
+            .ios-tab-bar {
+                 padding-bottom: env(safe-area-inset-bottom, 8px);
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-800 flex items-center justify-center min-h-screen p-4">
 
-    <div class="flex h-screen">
-        <!-- Sidebar Navigation (Hidden on mobile, visible on desktop) -->
-        <aside id="sidebar" class="sidebar w-64 flex-shrink-0 text-white flex-col fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30">
-            <div class="p-6 text-2xl font-bold text-center border-b border-white/10">
-                RotaFlow
+    <div class="ios-frame">
+        <!-- iOS App Content -->
+        <div class="flex-1 flex flex-col overflow-hidden relative">
+            
+            <!-- My Rota Screen -->
+            <div id="my-rota-screen" class="screen flex-col">
+                <header class="ios-header flex-shrink-0">
+                    <div class="flex justify-between items-center mb-4"><h1 class="text-3xl font-extrabold text-gray-900">My Rota</h1><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Dr. Anya Sharma" class="w-11 h-11 rounded-full object-cover"></div>
+                     <div class="bg-gray-200 p-1 rounded-xl flex justify-between text-sm text-gray-700"><button class="view-switcher-btn active w-1/3" data-view="list-view">List</button><button class="view-switcher-btn w-1/3" data-view="week-view">2-Week</button><button class="view-switcher-btn w-1/3" data-view="month-view">Month</button></div>
+                </header>
+                <main class="flex-1 overflow-y-auto p-6 pt-2 space-y-6">
+                    <div id="list-view" class="rota-view view-active">
+                        <div class="bg-white p-4 rounded-2xl shadow-md"><h2 class="font-bold text-lg text-gray-800 mb-3">Today, July 15</h2><div class="space-y-3"><div class="flex items-center p-3 rounded-xl bg-blue-50"><div class="p-2 bg-blue-100 rounded-lg mr-4"><i class="ph-bold ph-knife text-blue-600 text-xl"></i></div><div><p class="font-semibold text-blue-800">Theatre AM</p><p class="text-sm text-blue-600">08:00 - 12:00  •  Completed</p></div></div><div class="flex items-center p-3 rounded-xl bg-blue-50"><div class="p-2 bg-blue-100 rounded-lg mr-4"><i class="ph-bold ph-stethoscope text-blue-600 text-xl"></i></div><div><p class="font-semibold text-blue-800">Clinic PM</p><p class="text-sm text-blue-600">13:00 - 17:00  •  Completed</p></div></div></div><div class="flex gap-2 mt-4"><button id="create-op-note-btn" class="w-full py-2.5 bg-gray-800 text-white font-bold rounded-xl flex items-center justify-center text-sm shadow-lg"><i class="ph-bold ph-sparkle mr-2"></i> Create Op Note ✨</button><button id="create-handover-btn" class="w-full py-2.5 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center text-sm shadow-lg shadow-indigo-500/50"><i class="ph-bold ph-note-pencil mr-2"></i> Handover</button></div></div>
+                        <div><h2 class="font-bold text-lg text-gray-800 px-2 mt-6 mb-2">Upcoming</h2><div class="bg-white p-4 rounded-2xl shadow-md space-y-4"><div class="shift-card cursor-pointer" data-shift-title="On-Call (Night)" data-shift-details="Wednesday, 16 July • 20:00 - 08:00"><p class="font-semibold text-gray-500 text-sm mb-2">Wednesday, 16 July</p><div class="flex items-center p-3 rounded-xl bg-gray-100"><div class="p-2 bg-gray-200 rounded-lg mr-4"><i class="ph-bold ph-bed text-gray-600 text-xl"></i></div><div><p class="font-semibold text-gray-700">On-Call (Night)</p><p class="text-sm text-gray-500">20:00 - 08:00</p></div></div></div><hr class="border-gray-100"/><div><p class="font-semibold text-gray-500 text-sm mb-2">Thursday, 17 July</p><div class="flex items-center p-3 rounded-xl bg-green-50"><div class="p-2 bg-green-100 rounded-lg mr-4"><i class="ph-bold ph-airplane-takeoff text-green-600 text-xl"></i></div><div><p class="font-semibold text-green-800">Annual Leave</p><p class="text-sm text-green-600">All Day</p></div></div></div></div></div>
+                    </div>
+                    <div id="week-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 14 - 27</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm"><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div></div></div>
+                    <div id="month-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 2025</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm h-full"><div class="p-2 border-r border-b text-gray-400"><p>30</p></div><div class="p-2 border-r border-b"><p>1</p></div><div class="p-2 border-r border-b"><p>2</p></div><div class="p-2 border-r border-b"><p>3</p></div><div class="p-2 border-r border-b"><p>4</p></div><div class="p-2 border-r border-b bg-gray-100"><p>5</p></div><div class="p-2 border-b bg-gray-100"><p>6</p></div><div class="p-2 border-r border-b"><p>7</p></div><div class="p-2 border-r border-b"><p>8</p></div><div class="p-2 border-r border-b"><p>9</p></div><div class="p-2 border-r border-b"><p>10</p></div><div class="p-2 border-r border-b"><p>11</p></div><div class="p-2 border-r border-b bg-gray-100"><p>12</p></div><div class="p-2 border-b bg-gray-100"><p>13</p></div><div class="p-2 border-r border-b"><p>14</p></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div></div></div><div class="p-2 border-r border-b"><p>17</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>18</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div><div class="p-2 border-r border-b"><p>28</p></div><div class="p-2 border-r border-b"><p>29</p></div><div class="p-2 border-r border-b"><p>30</p></div><div class="p-2 border-r border-b"><p>31</p></div></div></div>
+                </main>
             </div>
-            <nav class="flex-grow p-4 space-y-2">
-                <a href="#" class="flex items-center px-4 py-2 bg-white/10 rounded-lg"><i class="ph-bold ph-calendar-blank mr-3"></i>Dashboard</a>
-                <a href="#" class="flex items-center px-4 py-2 hover:bg-white/10 rounded-lg"><i class="ph-bold ph-bell mr-3"></i>Requests <span class="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span></a>
-                <a href="#" class="flex items-center px-4 py-2 hover:bg-white/10 rounded-lg"><i class="ph-bold ph-users mr-3"></i>Staff</a>
-                <a href="#" class="flex items-center px-4 py-2 hover:bg-white/10 rounded-lg"><i class="ph-bold ph-chart-bar mr-3"></i>Reports</a>
-                <a href="#" class="flex items-center px-4 py-2 hover:bg-white/10 rounded-lg"><i class="ph-bold ph-gear mr-3"></i>Settings</a>
-            </nav>
-            <div class="p-4 border-t border-white/10">
-                <div class="flex items-center">
-                    <img src="https://placehold.co/40x40/e2e8f0/475569?text=CD" alt="Chloe Davies" class="rounded-full">
-                    <div class="ml-3">
-                        <p class="font-semibold">Chloe Davies</p>
-                        <p class="text-sm text-gray-300">Rota Administrator</p>
+
+            <!-- Digital Colleague Screen -->
+            <div id="colleague-screen" class="screen flex-col">
+                <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Digital Colleague</h1></header>
+                <main id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-4"></main>
+                <footer class="p-4 pt-0 bg-gray-100 border-t">
+                    <div id="suggestion-chips" class="pb-3 flex-wrap gap-2 hidden">
+                        <button class="suggestion-chip text-sm text-blue-700 bg-blue-100 font-semibold px-3 py-1.5 rounded-full">Summarize my day</button>
+                        <button class="suggestion-chip text-sm text-blue-700 bg-blue-100 font-semibold px-3 py-1.5 rounded-full">Draft an op note</button>
                     </div>
-                </div>
+                    <div class="flex items-center bg-white rounded-xl p-2">
+                        <input id="chat-input" type="text" placeholder="Ask anything..." class="flex-1 bg-transparent border-none focus:ring-0">
+                        <button id="send-chat-btn" class="p-2 bg-blue-600 text-white rounded-lg ml-2"><i class="ph-bold ph-paper-plane-right"></i></button>
+                    </div>
+                </footer>
             </div>
-        </aside>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col overflow-hidden">
-            <!-- Header -->
-            <header class="bg-white border-b p-4 flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center">
-                    <button id="menu-btn" class="md:hidden mr-4 p-2 rounded-md hover:bg-gray-100">
-                        <i class="ph-bold ph-list text-2xl"></i>
-                    </button>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-gray-800">Orthopaedics Rota</h1>
-                        <p class="text-sm text-gray-500">Ninewells Hospital</p>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <button class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50">Publish</button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow font-semibold">+ Create Rota</button>
-                </div>
-                 <button class="md:hidden p-2 rounded-md hover:bg-gray-100">
-                    <i class="ph-bold ph-dots-three-vertical text-2xl"></i>
-                </button>
-            </header>
-
-            <!-- Main Dashboard -->
-            <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                <!-- Calendar View (Primary on Desktop) -->
-                <div class="flex-1 p-4 md:p-6 overflow-y-auto">
-                    <!-- Calendar Controls -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            <button class="p-2 rounded-md hover:bg-gray-100"><i class="ph-bold ph-caret-left"></i></button>
-                            <h2 class="text-lg md:text-xl font-semibold text-gray-700">July 2025</h2>
-                            <button class="p-2 rounded-md hover:bg-gray-100"><i class="ph-bold ph-caret-right"></i></button>
-                        </div>
-                        <div class="hidden md:flex items-center border rounded-md p-0.5 bg-gray-100">
-                            <button class="px-3 py-1 text-sm rounded-md">Week</button>
-                            <button class="px-3 py-1 text-sm rounded-md bg-white shadow">Month</button>
-                        </div>
-                    </div>
-
-                    <!-- Desktop Calendar Grid (Hidden on Mobile) -->
-                    <div class="hidden md:block">
-                        <div class="calendar-grid">
-                            <div class="calendar-header text-center">Mon</div>
-                            <div class="calendar-header text-center">Tue</div>
-                            <div class="calendar-header text-center">Wed</div>
-                            <div class="calendar-header text-center">Thu</div>
-                            <div class="calendar-header text-center">Fri</div>
-                            <div class="calendar-header text-center">Sat</div>
-                            <div class="calendar-header text-center">Sun</div>
-                            
-                            <div class="calendar-day bg-gray-50 text-gray-400"><span class="p-1">30</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">1</span><div class="shift-card shift-consultant">Dr. A. Sharma (Clinic)</div><div class="shift-card shift-nurse">Ben Carter (LD)</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">2</span><div class="shift-card shift-consultant">Dr. A. Sharma (Theatre)</div><div class="shift-card shift-nurse">Ben Carter (LD)</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">3</span><div class="shift-card on-leave">Dr. A. Sharma (Leave)</div><div class="shift-card shift-nurse">Ben Carter (Night)</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">4</span><div class="shift-card on-leave">Dr. A. Sharma (Leave)</div><div class="shift-card shift-nurse">Ben Carter (Night)</div><div class="shift-card shift-gap text-xs">GAP: Registrar</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">5</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">6</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">7</span><div class="shift-card shift-consultant">Dr. A. Sharma (On-Call)</div><div class="shift-card shift-registrar">Dr. L. Evans (Ward)</div><div class="shift-card shift-nurse">Ben Carter (LD)</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">8</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">9</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">10</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">11</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">12</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">13</span></div>
-                            <div class="calendar-day relative ring-2 ring-blue-500"><span class="font-semibold p-1">14</span><div class="shift-card on-leave">Ben Carter (SICK)</div><div class="shift-card shift-gap">GAP: Nurse (LD)</div></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">15</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">16</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">17</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">18</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">19</span></div>
-                            <div class="calendar-day"><span class="font-semibold p-1">20</span></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Mobile List View (Hidden on Desktop) -->
-                    <div class="md:hidden space-y-4">
-                        <div class="bg-white p-3 rounded-lg shadow">
-                            <p class="font-bold">Monday, July 14</p>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center p-2 rounded-md bg-red-100 text-red-700">
-                                    <i class="ph-bold ph-warning-circle mr-2"></i>
-                                    <span class="font-semibold">GAP: Nurse (Long Day)</span>
-                                </div>
-                                <div class="flex items-center p-2 rounded-md bg-gray-100 text-gray-600">
-                                    <i class="ph-bold ph-bed mr-2"></i>
-                                    <span>Ben Carter (SICK)</span>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="bg-white p-3 rounded-lg shadow-sm">
-                            <p class="font-bold">Tuesday, July 15</p>
-                             <div class="mt-2 space-y-2">
-                                <div class="flex items-center p-2 rounded-md bg-blue-100 text-blue-700">
-                                    <i class="ph-bold ph-user-circle mr-2"></i>
-                                    <span>Dr. A. Sharma (Clinic)</span>
-                                </div>
-                                <div class="flex items-center p-2 rounded-md bg-green-100 text-green-700">
-                                    <i class="ph-bold ph-user mr-2"></i>
-                                    <span>Sarah Jones (Long Day)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Sidebar (Stacks below on mobile) -->
-                <aside class="w-full lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l bg-gray-50 flex flex-col overflow-y-auto">
-                    <!-- Stats Panel -->
-                    <div class="p-4 border-b">
-                        <h3 class="font-semibold text-gray-800 mb-3">July Rota Health</h3>
-                        <div class="grid grid-cols-3 gap-4 text-center">
-                            <div><p class="text-2xl font-bold text-red-600">2</p><p class="text-sm text-gray-500">Open Gaps</p></div>
-                            <div><p class="text-2xl font-bold text-yellow-600">1</p><p class="text-sm text-gray-500">Compliance</p></div>
-                            <div><p class="text-2xl font-bold text-green-600">98%</p><p class="text-sm text-gray-500">Filled</p></div>
-                        </div>
-                    </div>
-
-                    <!-- Requests Inbox -->
-                    <div class="p-4 border-b">
-                        <h3 class="font-semibold text-gray-800 mb-3">Requests Inbox (3)</h3>
-                        <div class="space-y-3">
-                            <div class="bg-white p-3 rounded-lg border"><p class="font-semibold text-sm">Leave Request</p><p class="text-gray-600 text-sm mt-1">Dr. Evans requests Annual Leave: Aug 4 - Aug 8</p><div class="flex items-center justify-end space-x-2 mt-2"><button class="px-3 py-1 text-xs border rounded-md hover:bg-gray-100">Decline</button><button class="px-3 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700">Approve</button></div></div>
-                            <div class="bg-white p-3 rounded-lg border"><p class="font-semibold text-sm">Shift Swap Request</p><p class="text-gray-600 text-sm mt-1">Ben Carter wants to swap [July 21, LD] with Sarah Jones</p><div class="flex items-center justify-end space-x-2 mt-2"><button class="px-3 py-1 text-xs border rounded-md hover:bg-gray-100">Decline</button><button class="px-3 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700">Approve</button></div></div>
-                        </div>
-                    </div>
-
-                    <!-- Gap Management Panel -->
-                    <div class="p-4 bg-blue-50 lg:flex-grow">
-                        <div class="flex items-center"><i class="ph-bold ph-lightbulb text-blue-600 text-2xl mr-3"></i><h3 class="font-bold text-lg text-blue-800">Fill Rota Gap</h3></div>
-                        <p class="text-gray-600 mt-1">Filling gap for **Nurse (LD)** on **Monday, July 14**.</p>
-                        <div class="mt-4"><h4 class="font-semibold text-sm text-gray-700 mb-2">AI-Powered Suggestions</h4><div class="space-y-2"><div class="bg-white p-3 rounded-lg border border-green-300 shadow-sm"><div class="flex justify-between items-center"><div><p class="font-semibold">Sarah Jones (Nurse)</p><p class="text-xs text-gray-500">Available, Compliant, Part-time</p></div><button class="px-3 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700">Offer</button></div></div><div class="bg-white p-3 rounded-lg border"><div class="flex justify-between items-center"><div><p class="font-semibold">David Chen (Nurse)</p><p class="text-xs text-gray-500">Available, Compliant</p></div><button class="px-3 py-1 text-sm border rounded-md hover:bg-gray-100">Offer</button></div></div></div></div>
-                        <div class="mt-4"><button class="w-full py-2 bg-white border rounded-lg text-gray-700 hover:bg-gray-100">Broadcast to Agencies</button></div>
-                    </div>
-                </aside>
+            <!-- Team Screen -->
+            <div id="team-screen" class="screen flex-col">
+                <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Team Rota</h1></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-4">
+                    <div class="relative"><i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" placeholder="Filter by name or role" class="w-full pl-11 pr-4 py-3 bg-white border-none rounded-xl shadow-sm"></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">On Shift Now</h2><div class="ios-list-group"><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Ben Carter</p><p class="text-sm text-gray-500">Nurse</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Long Day</p><p class="text-xs text-gray-400">Ward 15</p></div></div><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p><p class="text-sm text-gray-500">Registrar</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Theatre AM</p><p class="text-xs text-gray-400">Theatre 2</p></div></div></div></div>
+                </main>
             </div>
-        </main>
+
+            <!-- Requests Screen -->
+            <div id="requests-screen" class="screen flex-col">
+                <header class="ios-header flex-shrink-0"><div class="flex justify-between items-center"><h1 class="text-3xl font-extrabold text-gray-900">Requests</h1><button class="p-3 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/50"><i class="ph-bold ph-plus text-xl"></i></button></div></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-6">
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Pending</h2><div class="ios-list-group"><div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Annual Leave</p><p class="text-sm font-semibold text-yellow-500 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</p></div><p class="text-sm text-gray-500 mt-1">Aug 4, 2025 - Aug 8, 2025</p></div><div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Shift Swap</p><p class="text-sm font-semibold text-yellow-500 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</p></div><p class="text-sm text-gray-500 mt-1">Request to swap [July 21, LD] with Sarah Jones</p></div></div></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">History</h2><div class="ios-list-group"><div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Study Leave</p><p class="text-sm font-semibold text-green-600">Approved</p></div><p class="text-sm text-gray-500 mt-1">June 12, 2025</p></div><div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Annual Leave</p><p class="text-sm font-semibold text-red-600">Declined</p></div><p class="text-sm text-gray-500 mt-1">May 5, 2025 - May 7, 2025</p></div></div></div>
+                </main>
+            </div>
+
+            <!-- Profile Screen -->
+            <div id="profile-screen" class="screen flex-col">
+                <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Settings</h1></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-6">
+                    <div class="text-center"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-24 h-24 rounded-full mx-auto border-4 border-white shadow-lg object-cover"><h2 class="text-xl font-bold mt-3">Dr. Anya Sharma</h2><p class="text-gray-500">Consultant Surgeon</p></div>
+                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Account</h3><div class="ios-list-group"><div class="ios-list-item p-4 flex justify-between items-center"><span>Email</span><span class="text-gray-500">a.sharma@nhs.net</span></div><div class="ios-list-item p-4 flex justify-between items-center"><span>Change Password</span><i class="ph ph-caret-right text-gray-400"></i></div></div></div>
+                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Integrations</h3><div class="ios-list-group"><div class="ios-list-item p-4 flex justify-between items-center"><span>Sync to Calendar</span><button class="px-4 py-1 text-sm bg-blue-600 text-white font-semibold rounded-full shadow-md shadow-blue-500/50">Sync</button></div></div></div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- iOS Tab Bar Navigation -->
+        <footer class="ios-tab-bar flex-shrink-0 grid grid-cols-5 gap-1 px-2 py-1 z-40">
+            <a href="#" class="tab-item active" data-target="my-rota-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph-fill ph-calendar-check text-2xl"></i><span>My Rota</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="team-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph ph-users-three text-2xl"></i><span>Team</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="colleague-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph ph-sparkle text-2xl"></i><span>Colleague</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="requests-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1 relative"><i class="ph ph-bell text-2xl"></i><span class="absolute top-0 right-3 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span><span>Requests</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="profile-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph ph-user-circle text-2xl"></i><span>Profile</span></div></a>
+        </footer>
+        
+        <div class="ios-notch"></div>
+
+        <!-- Modals -->
+        <div id="shift-details-modal" class="modal-overlay"><div class="modal-content"><h2 id="modal-shift-title" class="font-bold text-xl text-gray-800 mb-1"></h2><p id="modal-shift-details" class="text-gray-600 text-sm mb-4"></p><div id="ai-swap-suggestions" class="space-y-3"></div><button id="find-swap-btn" class="w-full mt-4 py-3 bg-blue-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨</button><button id="close-swap-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Cancel</button></div></div>
+        <div id="handover-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Handover Note</h2><p class="text-gray-600 text-sm mb-4">Jot down key points from your shift. AI will format it into a professional SBAR note.</p><textarea id="handover-input" class="w-full h-24 p-3 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Patient in Bed 5, Mr. Smith, had low BP at 4pm. Responded to fluids.&#10;- Awaiting ortho review for Ms. Jones in Bed 8.&#10;- New admission, ankle fracture, in ED."></textarea><button id="generate-handover-btn" class="w-full mt-4 py-3 bg-indigo-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="handover-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="handover-output"></div></div><button id="close-handover-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
+        <div id="op-note-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Operation Note</h2><p class="text-gray-600 text-sm mb-4">List the key details of the procedure. AI will draft the full op note.</p><textarea id="op-note-input" class="w-full h-24 p-3 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Right total hip replacement&#10;- Posterior approach&#10;- Size 5 cup, 36mm head&#10;- No complications"></textarea><button id="generate-op-note-btn" class="w-full mt-4 py-3 bg-gray-800 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="op-note-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="op-note-output"></div></div><button id="close-op-note-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
     </div>
-    
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.getElementById('menu-btn');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
+            const tabItems = document.querySelectorAll('.tab-item');
+            const screens = document.querySelectorAll('.screen');
+            const shiftCards = document.querySelectorAll('.shift-card');
+            const shiftDetailsModal = document.getElementById('shift-details-modal');
+            const closeModalBtn = document.getElementById('close-swap-modal-btn');
+            const findSwapBtn = document.getElementById('find-swap-btn');
+            const modalShiftTitle = document.getElementById('modal-shift-title');
+            const modalShiftDetails = document.getElementById('modal-shift-details');
+            const aiSwapSuggestions = document.getElementById('ai-swap-suggestions');
+            const viewSwitcherBtns = document.querySelectorAll('.view-switcher-btn');
+            const rotaViews = document.querySelectorAll('.rota-view');
+            const createHandoverBtn = document.getElementById('create-handover-btn');
+            const handoverModal = document.getElementById('handover-modal');
+            const closeHandoverModalBtn = document.getElementById('close-handover-modal-btn');
+            const generateHandoverBtn = document.getElementById('generate-handover-btn');
+            const handoverInput = document.getElementById('handover-input');
+            const handoverOutputContainer = document.getElementById('handover-output-container');
+            const handoverOutput = document.getElementById('handover-output');
+            const createOpNoteBtn = document.getElementById('create-op-note-btn');
+            const opNoteModal = document.getElementById('op-note-modal');
+            const closeOpNoteModalBtn = document.getElementById('close-op-note-modal-btn');
+            const generateOpNoteBtn = document.getElementById('generate-op-note-btn');
+            const opNoteInput = document.getElementById('op-note-input');
+            const opNoteOutputContainer = document.getElementById('op-note-output-container');
+            const opNoteOutput = document.getElementById('op-note-output');
+            const chatContainer = document.getElementById('chat-container');
+            const chatInput = document.getElementById('chat-input');
+            const sendChatBtn = document.getElementById('send-chat-btn');
+            const suggestionChipsContainer = document.getElementById('suggestion-chips');
 
-            const toggleSidebar = () => {
-                sidebar.classList.toggle('-translate-x-full');
-                overlay.classList.toggle('hidden');
-            };
+            // --- Gemini API Simulations ---
+            async function callGeminiForSwapSuggestions(shiftTitle) { /* ... existing code ... */ }
+            async function callGeminiForHandover(notes) { /* ... existing code ... */ }
+            async function callGeminiForOpNote(notes) {
+                const prompt = `Create a formal surgical operation note from these points: ${notes}. Use standard headings: Procedure, Surgeon, Assistant, Anaesthetist, Findings, Procedure Details, Post-operative Plan.`;
+                return new Promise(resolve => setTimeout(() => resolve({ op_note: `<h4 class="font-bold text-gray-800">Procedure</h4><p class="mb-2 text-gray-600">Right Total Hip Replacement</p><h4 class="font-bold text-gray-800">Surgeon</h4><p class="mb-2 text-gray-600">Dr. Anya Sharma</p><h4 class="font-bold text-gray-800">Findings</h4><p class="mb-2 text-gray-600">Severe osteoarthritis of the right hip.</p><h4 class="font-bold text-gray-800">Procedure Details</h4><p class="mb-2 text-gray-600">A standard posterior approach was used. A size 5 cup and 36mm head were implanted. All components were stable on testing. No intra-operative complications.</p><h4 class="font-bold text-gray-800">Post-operative Plan</h4><p class="text-gray-600">Routine post-op care. Weight-bearing as tolerated. Follow up in clinic in 6 weeks.</p>` }), 1500));
+            }
+            async function callGeminiForChat(message) {
+                 const prompt = `The user is a doctor asking: "${message}". Based on typical hospital info, provide a helpful response. If asked for on-call info, Dr. Evans is on-call for Cardiology. If asked for a summary, mention a major trauma case and 3 admissions. If asked to draft an op note, guide them to the feature.`;
+                 return new Promise(resolve => setTimeout(() => {
+                    let responseText = "I can help with rota questions, handover notes, and finding on-call contacts. How can I assist you?";
+                    if (message.toLowerCase().includes("on call for cardiology")) {
+                        responseText = "Accessing the on-call directory... The consultant for Cardiology is Dr. Evans. I can bleep him for you if you'd like.";
+                    } else if (message.toLowerCase().includes("summarize my day")) {
+                        responseText = "Of course. Today you had a Theatre AM session followed by a Clinic PM session. Both are marked as completed. Would you like me to help draft a handover or op note?";
+                    } else if (message.toLowerCase().includes("draft an op note")) {
+                        responseText = "I can help with that. You can generate an op note from the 'My Rota' screen after a theatre session. Just tap the 'Create Op Note' button.";
+                    }
+                    resolve({ response: responseText });
+                 }, 1500));
+            }
 
-            menuBtn.addEventListener('click', toggleSidebar);
-            overlay.addEventListener('click', toggleSidebar);
+            // --- UI Logic ---
+            const openModal = (modal) => modal.classList.add('visible');
+            const closeModal = (modal) => modal.classList.remove('visible');
+
+            function switchScreen(targetId) {
+                const activeScreen = document.querySelector('.screen.active');
+                if (activeScreen && activeScreen.id === targetId) return;
+                screens.forEach(screen => screen.classList.remove('active'));
+                document.getElementById(targetId)?.classList.add('active');
+                tabItems.forEach(item => {
+                    const icon = item.querySelector('i');
+                    if(item.dataset.target === targetId) {
+                        item.classList.add('active');
+                        item.classList.remove('text-gray-500');
+                        icon?.classList.add('ph-fill');
+                    } else {
+                        item.classList.remove('active');
+                        item.classList.add('text-gray-500');
+                        icon?.classList.remove('ph-fill');
+                    }
+                });
+            }
+
+            tabItems.forEach(tab => tab.addEventListener('click', (e) => { e.preventDefault(); switchScreen(tab.dataset.target); }));
+            viewSwitcherBtns.forEach(btn => btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetViewId = btn.dataset.view;
+                rotaViews.forEach(view => view.classList.remove('view-active'));
+                document.getElementById(targetViewId)?.classList.add('view-active');
+                viewSwitcherBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }));
+            
+            shiftCards.forEach(card => card.addEventListener('click', () => {
+                modalShiftTitle.textContent = card.dataset.shiftTitle;
+                modalShiftDetails.textContent = card.dataset.shiftDetails;
+                aiSwapSuggestions.innerHTML = '';
+                findSwapBtn.style.display = 'flex';
+                findSwapBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨';
+                findSwapBtn.disabled = false;
+                openModal(shiftDetailsModal);
+            }));
+            
+            closeModalBtn.addEventListener('click', () => closeModal(shiftDetailsModal));
+            createHandoverBtn.addEventListener('click', () => {
+                handoverOutputContainer.classList.add('hidden');
+                handoverInput.value = '';
+                generateHandoverBtn.disabled = false;
+                generateHandoverBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(handoverModal);
+            });
+            closeHandoverModalBtn.addEventListener('click', () => closeModal(handoverModal));
+            createOpNoteBtn.addEventListener('click', () => {
+                opNoteOutputContainer.classList.add('hidden');
+                opNoteInput.value = '';
+                generateOpNoteBtn.disabled = false;
+                generateOpNoteBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
+                openModal(opNoteModal);
+            });
+            closeOpNoteModalBtn.addEventListener('click', () => closeModal(opNoteModal));
+
+            findSwapBtn.addEventListener('click', async () => { /* ... existing code ... */ });
+            generateHandoverBtn.addEventListener('click', async () => { /* ... existing code ... */ });
+            generateOpNoteBtn.addEventListener('click', async () => {
+                if (opNoteInput.value.trim() === '') return;
+                generateOpNoteBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+                generateOpNoteBtn.disabled = true;
+                const result = await callGeminiForOpNote(opNoteInput.value);
+                opNoteOutput.innerHTML = result.op_note;
+                opNoteOutputContainer.classList.remove('hidden');
+                generateOpNoteBtn.innerHTML = '<i class="ph-bold ph-check-circle mr-2"></i>Generated!';
+            });
+
+            // --- Chat Logic ---
+            function addMessageToChat(message, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `w-full flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+                messageDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl ${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}">${message}</div>`;
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.className = 'w-full flex justify-start';
+                typingDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl bg-gray-200 text-gray-800"><div class="flex items-center space-x-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div></div></div>`;
+                chatContainer.appendChild(typingDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            function removeTypingIndicator() {
+                document.getElementById('typing-indicator')?.remove();
+            }
+
+            async function handleSendMessage(message) {
+                if (!message || message.trim() === '') return;
+                addMessageToChat(message, 'user');
+                chatInput.value = '';
+                suggestionChipsContainer.classList.add('hidden');
+                addTypingIndicator();
+                const result = await callGeminiForChat(message);
+                removeTypingIndicator();
+                addMessageToChat(result.response, 'ai');
+            }
+
+            sendChatBtn.addEventListener('click', () => handleSendMessage(chatInput.value));
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(chatInput.value); });
+
+            document.querySelectorAll('.suggestion-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const message = chip.textContent;
+                    handleSendMessage(message);
+                });
+            });
+
+            // Initial chat message
+            addMessageToChat("Hello Dr. Sharma. How can I help you today?", 'ai');
+            suggestionChipsContainer.classList.remove('hidden');
+
+            // Set initial active screen
+            switchScreen('my-rota-screen');
+            document.querySelector('.view-switcher-btn[data-view="list-view"]')?.click();
         });
     </script>
 </body>
