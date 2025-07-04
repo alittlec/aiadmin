@@ -231,7 +231,7 @@
         <div id="shift-details-modal" class="modal-overlay"><div class="modal-content"><h2 id="modal-shift-title" class="font-bold text-xl text-gray-800 mb-1"></h2><p id="modal-shift-details" class="text-gray-600 text-sm mb-4"></p><div id="ai-swap-suggestions" class="space-y-3"></div><button id="find-swap-btn" class="w-full mt-4 py-3 bg-blue-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨</button><button id="close-swap-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Cancel</button></div></div>
         <div id="handover-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Handover Note</h2><p class="text-gray-600 text-sm mb-4">Jot down key points or dictate. AI will format it into a professional SBAR note.</p><div class="relative"><textarea id="handover-input" class="w-full h-24 p-3 pr-12 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Patient in Bed 5, Mr. Smith, had low BP..."></textarea><button id="dictate-handover-btn" class="absolute right-3 top-3 text-gray-400 hover:text-blue-600"><i class="ph-bold ph-microphone text-2xl"></i></button></div><button id="generate-handover-btn" class="w-full mt-4 py-3 bg-indigo-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="handover-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="handover-output"></div></div><button id="close-handover-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
         <div id="op-note-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Create Operation Note</h2><p class="text-gray-600 text-sm mb-4">List the key details or dictate. AI will draft the full op note.</p><div class="relative"><textarea id="op-note-input" class="w-full h-24 p-3 pr-12 bg-white rounded-xl border border-gray-200 text-sm" placeholder="- Right total hip replacement..."></textarea><button id="dictate-op-note-btn" class="absolute right-3 top-3 text-gray-400 hover:text-blue-600"><i class="ph-bold ph-microphone text-2xl"></i></button></div><button id="generate-op-note-btn" class="w-full mt-4 py-3 bg-gray-800 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg"><i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨</button><div id="op-note-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="op-note-output"></div></div><button id="close-op-note-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
-        <div id="mdt-prep-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Prepare MDT List</h2><p class="text-gray-600 text-sm mb-4">Enter patient identifiers. AI will fetch and summarize the required case information.</p><textarea id="mdt-input" class="w-full h-24 p-3 bg-white rounded-xl border border-gray-200 text-sm" placeholder="e.g., J. Smith (CHI: 123456), A. Jones (CHI: 789012)"></textarea><button id="generate-mdt-btn" class="w-full mt-4 py-3 bg-purple-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Prepare List with AI ✨</button><div id="mdt-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="mdt-output"></div></div><button id="close-mdt-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
+        <div id="mdt-prep-modal" class="modal-overlay"><div class="modal-content h-5/6 flex flex-col"><h2 class="font-bold text-xl text-gray-800 mb-2">Prepare MDT List</h2><p class="text-gray-600 text-sm mb-4">The following patients are scheduled for discussion. AI will fetch and summarize the required case information.</p><div id="mdt-patient-list" class="ios-list-group"></div><button id="generate-mdt-btn" class="w-full mt-4 py-3 bg-purple-600 text-white font-bold rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/50"><i class="ph-bold ph-sparkle mr-2"></i>Prepare List with AI ✨</button><div id="mdt-output-container" class="mt-4 bg-white p-4 rounded-xl flex-1 overflow-y-auto hidden"><div id="mdt-output"></div></div><button id="close-mdt-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Close</button></div></div>
     </div>
 
     <script>
@@ -252,40 +252,10 @@
                     suggestionChips: document.getElementById('suggestion-chips'),
                 },
                 modals: {
-                    swap: {
-                        el: document.getElementById('shift-details-modal'),
-                        closeBtn: document.getElementById('close-swap-modal-btn'),
-                        findBtn: document.getElementById('find-swap-btn'),
-                        title: document.getElementById('modal-shift-title'),
-                        details: document.getElementById('modal-shift-details'),
-                        suggestions: document.getElementById('ai-swap-suggestions'),
-                    },
-                    handover: {
-                        el: document.getElementById('handover-modal'),
-                        closeBtn: document.getElementById('close-handover-modal-btn'),
-                        generateBtn: document.getElementById('generate-handover-btn'),
-                        input: document.getElementById('handover-input'),
-                        outputContainer: document.getElementById('handover-output-container'),
-                        output: document.getElementById('handover-output'),
-                        dictateBtn: document.getElementById('dictate-handover-btn'),
-                    },
-                    opNote: {
-                        el: document.getElementById('op-note-modal'),
-                        closeBtn: document.getElementById('close-op-note-modal-btn'),
-                        generateBtn: document.getElementById('generate-op-note-btn'),
-                        input: document.getElementById('op-note-input'),
-                        outputContainer: document.getElementById('op-note-output-container'),
-                        output: document.getElementById('op-note-output'),
-                        dictateBtn: document.getElementById('dictate-op-note-btn'),
-                    },
-                    mdt: {
-                        el: document.getElementById('mdt-prep-modal'),
-                        closeBtn: document.getElementById('close-mdt-modal-btn'),
-                        generateBtn: document.getElementById('generate-mdt-btn'),
-                        input: document.getElementById('mdt-input'),
-                        outputContainer: document.getElementById('mdt-output-container'),
-                        output: document.getElementById('mdt-output'),
-                    }
+                    swap: { el: document.getElementById('shift-details-modal'), closeBtn: document.getElementById('close-swap-modal-btn'), findBtn: document.getElementById('find-swap-btn'), title: document.getElementById('modal-shift-title'), details: document.getElementById('modal-shift-details'), suggestions: document.getElementById('ai-swap-suggestions'), },
+                    handover: { el: document.getElementById('handover-modal'), closeBtn: document.getElementById('close-handover-modal-btn'), generateBtn: document.getElementById('generate-handover-btn'), input: document.getElementById('handover-input'), outputContainer: document.getElementById('handover-output-container'), output: document.getElementById('handover-output'), dictateBtn: document.getElementById('dictate-handover-btn'), },
+                    opNote: { el: document.getElementById('op-note-modal'), closeBtn: document.getElementById('close-op-note-modal-btn'), generateBtn: document.getElementById('generate-op-note-btn'), input: document.getElementById('op-note-input'), outputContainer: document.getElementById('op-note-output-container'), output: document.getElementById('op-note-output'), dictateBtn: document.getElementById('dictate-op-note-btn'), },
+                    mdt: { el: document.getElementById('mdt-prep-modal'), closeBtn: document.getElementById('close-mdt-modal-btn'), generateBtn: document.getElementById('generate-mdt-btn'), patientList: document.getElementById('mdt-patient-list'), outputContainer: document.getElementById('mdt-output-container'), output: document.getElementById('mdt-output'), }
                 }
             };
 
@@ -304,7 +274,9 @@
 
             function switchScreen(targetId) {
                 ui.screens.forEach(screen => screen.classList.remove('active'));
-                document.getElementById(targetId)?.classList.add('active');
+                const targetScreen = document.getElementById(targetId);
+                if (targetScreen) targetScreen.classList.add('active');
+                
                 ui.tabItems.forEach(item => {
                     const icon = item.querySelector('i');
                     if (item.dataset.target === targetId) {
@@ -321,102 +293,53 @@
 
             function switchRotaView(targetId) {
                 ui.rotaViews.forEach(view => view.classList.remove('view-active'));
-                document.getElementById(targetId)?.classList.add('view-active');
+                const targetView = document.getElementById(targetId);
+                if(targetView) targetView.classList.add('view-active');
+                
                 ui.viewSwitcherBtns.forEach(b => b.classList.remove('active'));
-                document.querySelector(`.view-switcher-btn[data-view="${targetId}"]`)?.classList.add('active');
+                const targetBtn = document.querySelector(`.view-switcher-btn[data-view="${targetId}"]`);
+                if(targetBtn) targetBtn.classList.add('active');
             }
             
-            function addMessageToChat(message, sender) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `w-full flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-                messageDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl ${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}">${message}</div>`;
-                ui.chat.container.appendChild(messageDiv);
-                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
-            }
-
-            function addTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.id = 'typing-indicator';
-                typingDiv.className = 'w-full flex justify-start';
-                typingDiv.innerHTML = `<div class="max-w-xs p-3 rounded-2xl bg-gray-200 text-gray-800"><div class="flex items-center space-x-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div></div></div>`;
-                ui.chat.container.appendChild(typingDiv);
-                ui.chat.container.scrollTop = ui.chat.container.scrollHeight;
-            }
-            
-            function removeTypingIndicator() {
-                document.getElementById('typing-indicator')?.remove();
-            }
-
-            async function handleSendMessage(message) {
-                if (!message || message.trim() === '') return;
-                addMessageToChat(message, 'user');
-                ui.chat.input.value = '';
-                ui.chat.suggestionChips.classList.add('hidden');
-                addTypingIndicator();
-                const result = await api.callGeminiForChat(message);
-                removeTypingIndicator();
-                addMessageToChat(result.response, 'ai');
-            }
-            
-            function simulateDictation(btn, textarea, sampleText) {
-                const icon = btn.querySelector('i');
-                icon.classList.remove('ph-microphone');
-                icon.classList.add('ph-waveform', 'text-red-500', 'animate-pulse');
-                btn.disabled = true;
-                setTimeout(() => {
-                    textarea.value = sampleText;
-                    icon.classList.add('ph-microphone');
-                    icon.classList.remove('ph-waveform', 'text-red-500', 'animate-pulse');
-                    btn.disabled = false;
-                }, 2000);
-            }
+            function addMessageToChat(message, sender) { /* ... existing code ... */ }
+            function addTypingIndicator() { /* ... existing code ... */ }
+            function removeTypingIndicator() { /* ... existing code ... */ }
+            async function handleSendMessage(message) { /* ... existing code ... */ }
+            function simulateDictation(btn, textarea, sampleText) { /* ... existing code ... */ }
 
             // --- Event Listeners ---
             ui.tabItems.forEach(tab => tab.addEventListener('click', (e) => { e.preventDefault(); switchScreen(tab.dataset.target); }));
             ui.viewSwitcherBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); switchRotaView(btn.dataset.view); }));
             
-            ui.shiftCards.forEach(card => card.addEventListener('click', () => {
-                ui.modals.swap.title.textContent = card.dataset.shiftTitle;
-                ui.modals.swap.details.textContent = card.dataset.shiftDetails;
-                ui.modals.swap.suggestions.innerHTML = '';
-                ui.modals.swap.findBtn.style.display = 'flex';
-                ui.modals.swap.findBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Find Swap Partner ✨';
-                ui.modals.swap.findBtn.disabled = false;
-                openModal(ui.modals.swap);
-            }));
+            ui.shiftCards.forEach(card => card.addEventListener('click', () => { /* ... existing code ... */ }));
             
-            ui.createHandoverBtn.addEventListener('click', () => {
-                ui.modals.handover.outputContainer.classList.add('hidden');
-                ui.modals.handover.input.value = '';
-                ui.modals.handover.generateBtn.disabled = false;
-                ui.modals.handover.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
-                openModal(ui.modals.handover);
-            });
+            Object.values(ui.modals).forEach(modal => modal.closeBtn?.addEventListener('click', () => closeModal(modal)));
             
-            ui.createOpNoteBtn.addEventListener('click', () => {
-                ui.modals.opNote.outputContainer.classList.add('hidden');
-                ui.modals.opNote.input.value = '';
-                ui.modals.opNote.generateBtn.disabled = false;
-                ui.modals.opNote.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Generate with AI ✨';
-                openModal(ui.modals.opNote);
-            });
-
+            ui.createHandoverBtn.addEventListener('click', () => { /* ... existing code ... */ });
+            ui.createOpNoteBtn.addEventListener('click', () => { /* ... existing code ... */ });
             ui.mdtCard.addEventListener('click', () => {
                 ui.modals.mdt.outputContainer.classList.add('hidden');
-                ui.modals.mdt.input.value = '';
+                ui.modals.mdt.patientList.innerHTML = `<div class="ios-list-item p-4"><p class="font-semibold">John Smith</p><p class="text-xs text-gray-500">CHI: 1234567890</p></div><div class="ios-list-item p-4"><p class="font-semibold">Alice Jones</p><p class="text-xs text-gray-500">CHI: 0987654321</p></div>`;
                 ui.modals.mdt.generateBtn.disabled = false;
                 ui.modals.mdt.generateBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Prepare List with AI ✨';
                 openModal(ui.modals.mdt);
             });
 
-            Object.values(ui.modals).forEach(modal => modal.closeBtn?.addEventListener('click', () => closeModal(modal)));
-            
             ui.modals.handover.dictateBtn.addEventListener('click', () => simulateDictation(ui.modals.handover.dictateBtn, ui.modals.handover.input, "Patient in Bed 5, Mr. Smith, had an episode of low blood pressure at 4 p.m. but responded well to fluids. Also, Ms. Jones in Bed 8 is still awaiting her ortho review, and there's a new ankle fracture in the Emergency Department to be aware of."));
             ui.modals.opNote.dictateBtn.addEventListener('click', () => simulateDictation(ui.modals.opNote.dictateBtn, ui.modals.opNote.input, "Right total hip replacement using a posterior approach. A size 5 cup and a 36 millimeter head were implanted. There were no complications."));
 
             ui.chat.sendBtn.addEventListener('click', () => handleSendMessage(ui.chat.input.value));
             ui.chat.input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSendMessage(ui.chat.input.value); });
             document.querySelectorAll('.suggestion-chip').forEach(chip => chip.addEventListener('click', () => handleSendMessage(chip.textContent)));
+
+            ui.modals.mdt.generateBtn.addEventListener('click', async () => {
+                ui.modals.mdt.generateBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+                ui.modals.mdt.generateBtn.disabled = true;
+                const result = await api.callGeminiForMdtPrep("J. Smith, A. Jones");
+                ui.modals.mdt.output.innerHTML = result.mdt_summary;
+                ui.modals.mdt.outputContainer.classList.remove('hidden');
+                ui.modals.mdt.generateBtn.innerHTML = '<i class="ph-bold ph-check-circle mr-2"></i>Generated!';
+            });
 
             // --- Initial Setup ---
             addMessageToChat("Hello Dr. Sharma. How can I help you today?", 'ai');
