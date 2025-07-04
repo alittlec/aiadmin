@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RotaFlow - iOS App Mockup (Interactive)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/css/phosphor.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .ios-frame {
+            width: 100%;
+            max-width: 420px;
+            height: 880px;
+            background: #f7f8fc;
+            border: 12px solid black;
+            border-radius: 50px;
+            box-shadow: 0 20px 60px -10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .ios-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 30px;
+            background-color: black;
+            border-radius: 0 0 16px 16px;
+            z-index: 50;
+        }
+        .ios-header {
+            padding: 60px 24px 16px 24px;
+            background-color: #f7f8fc;
+        }
+        .ios-tab-bar {
+            border-top: 1px solid #e5e7eb;
+            background-color: rgba(252, 252, 252, 0.95);
+            backdrop-filter: blur(15px);
+        }
+        .tab-item.active {
+            color: #0d6efd; /* A slightly richer iOS Blue */
+        }
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+        .screen.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        .ios-list-group {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .ios-list-item {
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .ios-list-item:last-child {
+            border-bottom: none;
+        }
+        .rotaflow-logo {
+            width: 32px;
+            height: 32px;
+        }
+        .nhs-logo {
+            height: 28px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="ios-frame">
+        <!-- iOS App Content -->
+        <div class="flex-1 flex flex-col overflow-hidden relative">
+            
+            <!-- My Rota Screen -->
+            <div id="my-rota-screen" class="screen active flex flex-col">
+                <header class="ios-header flex-shrink-0">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-3xl font-extrabold text-gray-900">My Rota</h1>
+                        <img src="https://placehold.co/44x44/dbeafe/1e3a8a?text=AS" alt="Dr. Anya Sharma" class="rounded-full">
+                    </div>
+                </header>
+                <main class="flex-1 overflow-y-auto p-6 pt-2 space-y-6">
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-500 text-white p-5 rounded-2xl shadow-lg">
+                        <h2 class="font-bold text-lg text-white/90 mb-3">Today, July 15</h2>
+                        <div class="space-y-3">
+                            <div class="flex items-center p-3 rounded-xl bg-white/20"><div class="p-2 bg-white/30 rounded-lg mr-4"><i class="ph-bold ph-knife text-white text-xl"></i></div><div><p class="font-semibold">Theatre AM</p><p class="text-sm text-white/80">08:00 - 12:00  •  Theatre 2</p></div></div>
+                            <div class="flex items-center p-3 rounded-xl bg-white/20"><div class="p-2 bg-white/30 rounded-lg mr-4"><i class="ph-bold ph-stethoscope text-white text-xl"></i></div><div><p class="font-semibold">Clinic PM</p><p class="text-sm text-white/80">13:00 - 17:00  •  Ortho Outpatients</p></div></div>
+                        </div>
+                    </div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Upcoming</h2><div class="bg-white p-4 rounded-2xl shadow-md space-y-4">
+                        <div><p class="font-semibold text-gray-500 text-sm mb-2">Wednesday, 16 July</p><div class="flex items-center p-3 rounded-xl bg-gray-100"><div class="p-2 bg-gray-200 rounded-lg mr-4"><i class="ph-bold ph-bed text-gray-600 text-xl"></i></div><div><p class="font-semibold text-gray-700">On-Call (Night)</p><p class="text-sm text-gray-500">20:00 - 08:00</p></div></div></div><hr class="border-gray-100"/>
+                        <div><p class="font-semibold text-gray-500 text-sm mb-2">Thursday, 17 July</p><div class="flex items-center p-3 rounded-xl bg-green-50"><div class="p-2 bg-green-100 rounded-lg mr-4"><i class="ph-bold ph-airplane-takeoff text-green-600 text-xl"></i></div><div><p class="font-semibold text-green-800">Annual Leave</p><p class="text-sm text-green-600">All Day</p></div></div></div>
+                    </div></div>
+                </main>
+            </div>
+
+            <!-- Team Screen -->
+            <div id="team-screen" class="screen flex flex-col">
+                <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Team Rota</h1></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-4">
+                    <div class="relative"><i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" placeholder="Filter by name or role" class="w-full pl-11 pr-4 py-3 bg-white border-none rounded-xl shadow-sm"></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">On Shift Now</h2><div class="ios-list-group">
+                        <div class="ios-list-item p-4 flex items-center"><img src="https://placehold.co/48x48/dbeafe/1e3a8a?text=BC" class="rounded-full mr-4"><div class="flex-1"><p class="font-semibold">Ben Carter</p><p class="text-sm text-gray-500">Nurse</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Long Day</p><p class="text-xs text-gray-400">Ward 15</p></div></div>
+                        <div class="ios-list-item p-4 flex items-center"><img src="https://placehold.co/48x48/dbeafe/1e3a8a?text=LE" class="rounded-full mr-4"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p><p class="text-sm text-gray-500">Registrar</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Theatre AM</p><p class="text-xs text-gray-400">Theatre 2</p></div></div>
+                    </div></div>
+                </main>
+            </div>
+
+            <!-- Requests Screen -->
+            <div id="requests-screen" class="screen flex flex-col">
+                <header class="ios-header flex-shrink-0"><div class="flex justify-between items-center"><h1 class="text-3xl font-extrabold text-gray-900">Requests</h1><button class="p-3 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/50"><i class="ph-bold ph-plus text-xl"></i></button></div></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-6">
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Pending</h2><div class="ios-list-group">
+                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Annual Leave</p><p class="text-sm font-semibold text-yellow-500 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</p></div><p class="text-sm text-gray-500 mt-1">Aug 4, 2025 - Aug 8, 2025</p></div>
+                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Shift Swap</p><p class="text-sm font-semibold text-yellow-500 bg-yellow-100 px-2 py-0.5 rounded-full">Pending</p></div><p class="text-sm text-gray-500 mt-1">Request to swap [July 21, LD] with Sarah Jones</p></div>
+                    </div></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">History</h2><div class="ios-list-group">
+                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Study Leave</p><p class="text-sm font-semibold text-green-600">Approved</p></div><p class="text-sm text-gray-500 mt-1">June 12, 2025</p></div>
+                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Annual Leave</p><p class="text-sm font-semibold text-red-600">Declined</p></div><p class="text-sm text-gray-500 mt-1">May 5, 2025 - May 7, 2025</p></div>
+                    </div></div>
+                </main>
+            </div>
+
+            <!-- Profile Screen -->
+            <div id="profile-screen" class="screen flex flex-col">
+                <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Settings</h1></header>
+                <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-6">
+                    <div class="text-center"><img src="https://placehold.co/88x88/dbeafe/1e3a8a?text=AS" class="rounded-full mx-auto border-4 border-white shadow-lg"><h2 class="text-xl font-bold mt-3">Dr. Anya Sharma</h2><p class="text-gray-500">Consultant Surgeon</p></div>
+                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Account</h3><div class="ios-list-group">
+                        <div class="ios-list-item p-4 flex justify-between items-center"><span>Email</span><span class="text-gray-500">a.sharma@nhs.net</span></div>
+                        <div class="ios-list-item p-4 flex justify-between items-center"><span>Change Password</span><i class="ph ph-caret-right text-gray-400"></i></div>
+                    </div></div>
+                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Integrations</h3><div class="ios-list-group">
+                        <div class="ios-list-item p-4 flex justify-between items-center"><span>Sync to Calendar</span><button class="px-4 py-1 text-sm bg-blue-600 text-white font-semibold rounded-full shadow-md shadow-blue-500/50">Sync</button></div>
+                    </div></div>
+                    <div class="text-center pt-8">
+                        <div class="flex items-center justify-center space-x-4">
+                            <svg class="rotaflow-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50,10A40,40,0,1,1,10,50,40,40,0,0,1,50,10M50,0A50,50,0,1,0,100,50,50,50,0,0,0,50,0Z" fill="#0d6efd"/><path d="M50,20A30,30,0,0,1,72.25,65H27.75A30,30,0,0,1,50,20Z" fill="#87bafd"/><path d="M50,30a20,20,0,1,1-14.14,5.86A20,20,0,0,1,50,30Z" fill="#0d6efd"/></svg>
+                            <svg class="nhs-logo" viewBox="0 0 107.5 45.5" xmlns="http://www.w3.org/2000/svg"><path d="M0 45.5V0h11.5v34h24V0h11.5v45.5H35.5v-9.5H11.5v9.5zM60.5 45.5V0h11.5v17h12V0h11.5v45.5h-11.5V28h-12v17.5z" fill="#005eb8"/></svg>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4">RotaFlow v1.0 • NHS Tayside</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- iOS Tab Bar Navigation -->
+        <footer class="ios-tab-bar flex-shrink-0 grid grid-cols-4 gap-2 px-4 py-2 z-40">
+            <a href="#" class="tab-item active" data-target="my-rota-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph-fill ph-calendar-check text-2xl"></i><span>My Rota</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="team-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph ph-users-three text-2xl"></i><span>Team</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="requests-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1 relative"><i class="ph ph-bell text-2xl"></i><span class="absolute top-0 right-3 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span><span>Requests</span></div></a>
+            <a href="#" class="tab-item text-gray-500" data-target="profile-screen"><div class="flex flex-col items-center justify-center text-center text-xs space-y-1 py-1"><i class="ph ph-user-circle text-2xl"></i><span>Profile</span></div></a>
+        </footer>
+        
+        <div class="ios-notch"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabItems = document.querySelectorAll('.tab-item');
+            const screens = document.querySelectorAll('.screen');
+
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetId = tab.dataset.target;
+                    const activeScreen = document.querySelector('.screen.active');
+
+                    if (activeScreen.id === targetId) return;
+
+                    // Update screens
+                    screens.forEach(screen => {
+                        if (screen.id === targetId) {
+                            screen.classList.add('active');
+                        } else {
+                            screen.classList.remove('active');
+                        }
+                    });
+
+                    // Update tab bar items
+                    tabItems.forEach(item => {
+                        item.classList.remove('active');
+                        item.classList.add('text-gray-500');
+                        const icon = item.querySelector('i');
+                        if (icon) {
+                           icon.classList.remove('ph-fill');
+                           icon.classList.add('ph');
+                        }
+                    });
+
+                    tab.classList.add('active');
+                    tab.classList.remove('text-gray-500');
+                    const icon = tab.querySelector('i');
+                    if(icon){
+                       icon.classList.remove('ph');
+                       icon.classList.add('ph-fill');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
