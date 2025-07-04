@@ -167,7 +167,16 @@
                         Generate Rota ✨
                     </button>
                     <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Urgent Actions</h2><div class="ios-list-group">
-                        <div id="fill-gap-action" class="ios-list-item p-4 cursor-pointer"><div class="flex justify-between items-center"><p class="font-semibold">Fill Gap: Nurse (LD)</p><p class="text-sm font-semibold text-red-600">Today</p></div><p class="text-sm text-gray-500 mt-1">Ben Carter reported sick.</p></div>
+                        <div id="fill-gap-action" class="ios-list-item p-4 cursor-pointer">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold flex items-center">
+                                    Fill Gap: Nurse (LD)
+                                    <i class="ph-fill ph-sparkle text-indigo-500 ml-2 text-base"></i>
+                                </p>
+                                <p class="text-sm font-semibold text-red-600">Today</p>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">Ben Carter reported sick.</p>
+                        </div>
                         <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Approve Leave</p><p class="text-sm font-semibold text-gray-500">A. Sharma</p></div><p class="text-sm text-gray-500 mt-1">Request for Aug 4 - Aug 8</p></div>
                     </div></div>
                 </main>
@@ -306,6 +315,7 @@
 
             fillGapAction.addEventListener('click', () => {
                 aiGapSuggestions.innerHTML = ''; // Clear previous suggestions
+                askAIGapBtn.style.display = 'flex';
                 askAIGapBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Ask AI for Suggestions ✨';
                 askAIGapBtn.disabled = false;
                 openModal(fillGapModal);
@@ -342,3 +352,4 @@
     </script>
 </body>
 </html>
+
