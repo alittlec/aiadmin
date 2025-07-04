@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RotaFlow - Admin iOS App Mockup</title>
+    <title>RotaFlow - Admin iOS App Mockup (AI-Enhanced)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/css/phosphor.min.css" rel="stylesheet">
@@ -77,6 +77,47 @@
         .ios-list-item:last-child {
             border-bottom: none;
         }
+        .rota-view { display: none; }
+        .rota-view.view-active { display: block; }
+        .view-switcher-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+        .view-switcher-btn.active {
+            background-color: white;
+            color: #5856d6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 100;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background-color: #f7f8fc;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: 40px;
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: translateY(0);
+        }
         /* Mobile-first adjustments */
         @media (max-width: 640px) {
             body {
@@ -121,13 +162,12 @@
                         <div class="bg-red-100 text-red-800 p-4 rounded-2xl"><p class="text-sm font-semibold opacity-80">Open Gaps</p><p class="text-4xl font-extrabold">2</p></div>
                         <div class="bg-yellow-100 text-yellow-800 p-4 rounded-2xl"><p class="text-sm font-semibold opacity-80">Pending</p><p class="text-4xl font-extrabold">3</p></div>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl shadow-md">
-                        <div class="flex justify-between items-center mb-3"><h2 class="font-bold text-lg text-gray-800">Compliance</h2><p class="font-bold text-green-600">99.8%</p></div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 99.8%"></div></div>
-                        <p class="text-xs text-gray-400 mt-2">1 EWTD warning this period.</p>
-                    </div>
+                    <button id="generate-rota-btn" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/50 flex items-center justify-center">
+                        <i class="ph-bold ph-sparkle mr-2"></i>
+                        Generate Rota ✨
+                    </button>
                     <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Urgent Actions</h2><div class="ios-list-group">
-                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Fill Gap: Nurse (LD)</p><p class="text-sm font-semibold text-red-600">Today</p></div><p class="text-sm text-gray-500 mt-1">Ben Carter reported sick.</p></div>
+                        <div id="fill-gap-action" class="ios-list-item p-4 cursor-pointer"><div class="flex justify-between items-center"><p class="font-semibold">Fill Gap: Nurse (LD)</p><p class="text-sm font-semibold text-red-600">Today</p></div><p class="text-sm text-gray-500 mt-1">Ben Carter reported sick.</p></div>
                         <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Approve Leave</p><p class="text-sm font-semibold text-gray-500">A. Sharma</p></div><p class="text-sm text-gray-500 mt-1">Request for Aug 4 - Aug 8</p></div>
                     </div></div>
                 </main>
@@ -135,19 +175,14 @@
 
             <!-- Rota Screen -->
             <div id="rota-screen" class="screen flex flex-col">
-                <header class="ios-header flex-shrink-0"><div class="flex justify-between items-center"><h1 class="text-3xl font-extrabold text-gray-900">Full Rota</h1><button class="p-2 rounded-full"><i class="ph-bold ph-funnel-simple text-2xl text-gray-500"></i></button></div></header>
+                <header class="ios-header flex-shrink-0">
+                    <div class="flex justify-between items-center mb-4"><h1 class="text-3xl font-extrabold text-gray-900">Full Rota</h1><button class="p-2 rounded-full"><i class="ph-bold ph-funnel-simple text-2xl text-gray-500"></i></button></div>
+                    <div class="bg-gray-200 p-1 rounded-xl flex justify-between text-sm text-gray-600"><button class="view-switcher-btn w-1/3" data-view="day-view">Day</button><button class="view-switcher-btn active w-1/3" data-view="week-view">2-Week</button><button class="view-switcher-btn w-1/3" data-view="month-view">Month</button></div>
+                </header>
                 <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-4">
-                    <div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">Today, July 15</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div>
-                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Consultants</h3><div class="ios-list-group">
-                        <div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Anya Sharma</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Theatre / Clinic</p></div></div>
-                    </div></div>
-                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Registrars</h3><div class="ios-list-group">
-                        <div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">On-Call</p></div></div>
-                    </div></div>
-                    <div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Nurses</h3><div class="ios-list-group">
-                        <div class="ios-list-item p-4 flex items-center bg-red-50 border-l-4 border-red-500"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Ben Carter</p></div><div class="text-right"><p class="font-semibold text-sm text-red-600">SICK</p></div></div>
-                        <div class="ios-list-item p-4 flex items-center bg-red-50 border-l-4 border-red-500"><div class="flex-1"><p class="font-semibold text-red-700">Unfilled Gap</p></div><div class="text-right"><p class="font-semibold text-sm text-red-600">Long Day</p></div></div>
-                    </div></div>
+                    <div id="day-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">Today, July 15</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="mt-4 space-y-4"><div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Consultants</h3><div class="ios-list-group"><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Anya Sharma</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">Theatre / Clinic</p></div></div></div></div><div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Registrars</h3><div class="ios-list-group"><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p></div><div class="text-right"><p class="font-semibold text-sm text-blue-600">On-Call</p></div></div></div></div><div><h3 class="font-semibold text-gray-500 uppercase text-xs px-3 mb-1">Nurses</h3><div class="ios-list-group"><div class="ios-list-item p-4 flex items-center bg-red-50 border-l-4 border-red-500"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Ben Carter</p></div><div class="text-right"><p class="font-semibold text-sm text-red-600">SICK</p></div></div><div class="ios-list-item p-4 flex items-center bg-red-50 border-l-4 border-red-500"><div class="flex-1"><p class="font-semibold text-red-700">Unfilled Gap</p></div><div class="text-right"><p class="font-semibold text-sm text-red-600">Long Day</p></div></div></div></div></div></div>
+                    <div id="week-view" class="rota-view view-active"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 14 - 27</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm"><div class="p-2 border-r border-b"><p>14</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-red-500"></div></div></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p></div><div class="p-2 border-r border-b"><p>17</p></div><div class="p-2 border-r border-b"><p>18</p></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div></div></div>
+                    <div id="month-view" class="rota-view"><div class="flex items-center justify-between"><button><i class="ph-bold ph-caret-left text-xl"></i></button><h2 class="font-bold text-lg">July 2025</h2><button><i class="ph-bold ph-caret-right text-xl"></i></button></div><div class="grid grid-cols-7 text-center text-xs font-bold text-gray-500 mt-4 border-b pb-2"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="grid grid-cols-7 text-center text-sm h-full"><div class="p-2 border-r border-b text-gray-400"><p>30</p></div><div class="p-2 border-r border-b"><p>1</p></div><div class="p-2 border-r border-b"><p>2</p></div><div class="p-2 border-r border-b"><p>3</p></div><div class="p-2 border-r border-b"><p>4</p></div><div class="p-2 border-r border-b bg-gray-100"><p>5</p></div><div class="p-2 border-b bg-gray-100"><p>6</p></div><div class="p-2 border-r border-b"><p>7</p></div><div class="p-2 border-r border-b"><p>8</p></div><div class="p-2 border-r border-b"><p>9</p></div><div class="p-2 border-r border-b"><p>10</p></div><div class="p-2 border-r border-b"><p>11</p></div><div class="p-2 border-r border-b bg-gray-100"><p>12</p></div><div class="p-2 border-b bg-gray-100"><p>13</p></div><div class="p-2 border-r border-b"><p>14</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-red-500"></div></div></div><div class="p-2 border-r border-b"><p>15</p><div class="flex justify-center mt-1 space-x-1"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div><div class="w-1.5 h-1.5 rounded-full bg-green-500"></div></div></div><div class="p-2 border-r border-b"><p>16</p></div><div class="p-2 border-r border-b"><p>17</p></div><div class="p-2 border-r border-b"><p>18</p></div><div class="p-2 border-r border-b bg-gray-100"><p>19</p></div><div class="p-2 border-b bg-gray-100"><p>20</p></div><div class="p-2 border-r border-b"><p>21</p></div><div class="p-2 border-r border-b"><p>22</p></div><div class="p-2 border-r border-b"><p>23</p></div><div class="p-2 border-r border-b"><p>24</p></div><div class="p-2 border-r border-b"><p>25</p></div><div class="p-2 border-r border-b bg-gray-100"><p>26</p></div><div class="p-2 border-b bg-gray-100"><p>27</p></div><div class="p-2 border-r border-b"><p>28</p></div><div class="p-2 border-r border-b"><p>29</p></div><div class="p-2 border-r border-b"><p>30</p></div><div class="p-2 border-r border-b"><p>31</p></div></div></div>
                 </main>
             </div>
 
@@ -155,12 +190,8 @@
             <div id="requests-screen" class="screen flex flex-col">
                 <header class="ios-header flex-shrink-0"><div class="flex justify-between items-center"><h1 class="text-3xl font-extrabold text-gray-900">Requests</h1></div></header>
                 <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-6">
-                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Leave (1)</h2><div class="ios-list-group">
-                        <div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Dr. A. Sharma</p><p class="text-sm text-gray-500">Annual Leave</p></div><p class="text-sm text-gray-500 mt-1">Aug 4 - Aug 8</p><div class="flex gap-2 mt-3"><button class="w-full py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg">Decline</button><button class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg">Approve</button></div></div>
-                    </div></div>
-                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Swaps (2)</h2><div class="ios-list-group">
-                         <div class="ios-list-item p-4"><p class="font-semibold">B. Carter & S. Jones</p><p class="text-sm text-gray-500 mt-1">Request to swap [July 21, LD]</p><div class="flex gap-2 mt-3"><button class="w-full py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg">Decline</button><button class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg">Approve</button></div></div>
-                    </div></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Leave (1)</h2><div class="ios-list-group"><div class="ios-list-item p-4"><div class="flex justify-between items-center"><p class="font-semibold">Dr. A. Sharma</p><p class="text-sm text-gray-500">Annual Leave</p></div><p class="text-sm text-gray-500 mt-1">Aug 4 - Aug 8</p><div class="flex gap-2 mt-3"><button class="w-full py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg">Decline</button><button class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg">Approve</button></div></div></div></div>
+                    <div><h2 class="font-bold text-lg text-gray-800 px-2 mb-2">Swaps (2)</h2><div class="ios-list-group"><div class="ios-list-item p-4"><p class="font-semibold">B. Carter & S. Jones</p><p class="text-sm text-gray-500 mt-1">Request to swap [July 21, LD]</p><div class="bg-indigo-50 border border-indigo-200 text-indigo-800 p-3 rounded-lg mt-3 text-sm"><p><strong class="font-semibold">✨ AI Analysis:</strong> Approving this swap would result in Ben Carter working three consecutive night shifts. This is compliant but not recommended for staff wellbeing.</p></div><div class="flex gap-2 mt-3"><button class="w-full py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg">Decline</button><button class="w-full py-2 bg-indigo-600 text-white font-semibold rounded-lg">Approve</button></div></div></div></div>
                 </main>
             </div>
 
@@ -169,11 +200,7 @@
                 <header class="ios-header flex-shrink-0"><h1 class="text-3xl font-extrabold text-gray-900">Staff</h1></header>
                  <main class="flex-1 overflow-y-auto px-6 pt-2 space-y-4">
                     <div class="relative"><i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" placeholder="Filter by name or role" class="w-full pl-11 pr-4 py-3 bg-white border-none rounded-xl shadow-sm"></div>
-                    <div class="ios-list-group">
-                        <div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Anya Sharma</p><p class="text-sm text-gray-500">Consultant</p></div><i class="ph ph-caret-right text-gray-400"></i></div>
-                        <div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Ben Carter</p><p class="text-sm text-gray-500">Nurse</p></div><i class="ph ph-caret-right text-gray-400"></i></div>
-                        <div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p><p class="text-sm text-gray-500">Registrar</p></div><i class="ph ph-caret-right text-gray-400"></i></div>
-                    </div>
+                    <div class="ios-list-group"><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Anya Sharma</p><p class="text-sm text-gray-500">Consultant</p></div><i class="ph ph-caret-right text-gray-400"></i></div><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Ben Carter</p><p class="text-sm text-gray-500">Nurse</p></div><i class="ph ph-caret-right text-gray-400"></i></div><div class="ios-list-item p-4 flex items-center"><img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" class="w-12 h-12 rounded-full mr-4 object-cover"><div class="flex-1"><p class="font-semibold">Dr. Liam Evans</p><p class="text-sm text-gray-500">Registrar</p></div><i class="ph ph-caret-right text-gray-400"></i></div></div>
                 </main>
             </div>
         </div>
@@ -187,49 +214,130 @@
         </footer>
         
         <div class="ios-notch"></div>
+        
+        <!-- AI Modals -->
+        <div id="fill-gap-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="font-bold text-xl text-gray-800 mb-2">Fill Gap: Nurse (LD)</h2>
+                <p class="text-gray-600 text-sm mb-4">Ben Carter reported sick for his Long Day shift today.</p>
+                <div id="ai-gap-suggestions">
+                    <!-- AI suggestions will be injected here -->
+                </div>
+                <button id="ask-ai-gap-btn" class="w-full mt-4 py-3 bg-indigo-600 text-white font-bold rounded-2xl flex items-center justify-center"><i class="ph-bold ph-sparkle mr-2"></i>Ask AI for Suggestions ✨</button>
+                <button id="close-gap-modal-btn" class="w-full mt-2 py-2 text-gray-600 font-semibold rounded-2xl">Cancel</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tabItems = document.querySelectorAll('.tab-item');
             const screens = document.querySelectorAll('.screen');
+            const viewSwitcherBtns = document.querySelectorAll('.view-switcher-btn');
+            const rotaViews = document.querySelectorAll('.rota-view');
+            const fillGapAction = document.getElementById('fill-gap-action');
+            const fillGapModal = document.getElementById('fill-gap-modal');
+            const closeGapModalBtn = document.getElementById('close-gap-modal-btn');
+            const askAIGapBtn = document.getElementById('ask-ai-gap-btn');
+            const aiGapSuggestions = document.getElementById('ai-gap-suggestions');
 
+            // --- Gemini API Simulation ---
+            async function callGeminiApiForGapSuggestions() {
+                // This is a mock function. In a real app, you would make a fetch call here.
+                // The prompt would include context about the gap and available staff.
+                const prompt = `
+                    The following gap needs to be filled: Nurse, Long Day, Today.
+                    Available staff: 
+                    - Sarah Jones (Nurse, Part-time, 2/3 shifts this week)
+                    - David Chen (Nurse, Full-time, 4/5 shifts this week)
+                    - Maria Garcia (Nurse, Full-time, 4/5 shifts this week, worked last night)
+                    Please provide the top 2 best-fit candidates with brief justifications.
+                `;
+                
+                // Simulating API latency
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve({
+                            candidates: [
+                                { name: "Sarah Jones", justification: "Best fit. Part-time and has capacity. No compliance issues." },
+                                { name: "David Chen", justification: "Good fit. Available and compliant, but would be their 5th shift." }
+                            ]
+                        });
+                    }, 1500);
+                });
+            }
+
+            // --- Main screen navigation ---
             tabItems.forEach(tab => {
                 tab.addEventListener('click', (event) => {
                     event.preventDefault();
                     const targetId = tab.dataset.target;
                     const activeScreen = document.querySelector('.screen.active');
-
                     if (activeScreen && activeScreen.id === targetId) return;
-
-                    // Update screens
-                    screens.forEach(screen => {
-                        screen.classList.remove('active');
-                        if (screen.id === targetId) {
-                            screen.classList.add('active');
-                        }
-                    });
-
-                    // Update tab bar items
+                    screens.forEach(screen => screen.classList.remove('active'));
+                    document.getElementById(targetId)?.classList.add('active');
                     tabItems.forEach(item => {
                         item.classList.remove('active');
                         item.classList.add('text-gray-500');
-                        const icon = item.querySelector('i');
-                        if (icon) {
-                           icon.classList.remove('ph-fill');
-                           icon.classList.add('ph');
-                        }
+                        item.querySelector('i')?.classList.remove('ph-fill');
                     });
-
                     tab.classList.add('active');
                     tab.classList.remove('text-gray-500');
-                    const icon = tab.querySelector('i');
-                    if(icon){
-                       icon.classList.remove('ph');
-                       icon.classList.add('ph-fill');
-                    }
+                    tab.querySelector('i')?.classList.add('ph-fill');
                 });
             });
+
+            // --- Rota view switcher ---
+            viewSwitcherBtns.forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetViewId = btn.dataset.view;
+                    rotaViews.forEach(view => view.classList.remove('view-active'));
+                    document.getElementById(targetViewId)?.classList.add('view-active');
+                    viewSwitcherBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+
+            // --- Modal Logic ---
+            const openModal = (modal) => modal.classList.add('visible');
+            const closeModal = (modal) => modal.classList.remove('visible');
+
+            fillGapAction.addEventListener('click', () => {
+                aiGapSuggestions.innerHTML = ''; // Clear previous suggestions
+                askAIGapBtn.innerHTML = '<i class="ph-bold ph-sparkle mr-2"></i>Ask AI for Suggestions ✨';
+                askAIGapBtn.disabled = false;
+                openModal(fillGapModal);
+            });
+            closeGapModalBtn.addEventListener('click', () => closeModal(fillGapModal));
+
+            askAIGapBtn.addEventListener('click', async () => {
+                askAIGapBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+                askAIGapBtn.disabled = true;
+
+                const result = await callGeminiApiForGapSuggestions();
+                
+                let suggestionsHTML = '<h3 class="font-bold text-lg text-gray-800 px-2 mb-2">✨ AI Suggestions</h3><div class="ios-list-group">';
+                result.candidates.forEach((candidate, index) => {
+                    suggestionsHTML += `
+                        <div class="ios-list-item p-4">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold">${candidate.name}</p>
+                                <button class="px-3 py-1 text-sm ${index === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-800'} font-semibold rounded-lg">Offer Shift</button>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">${candidate.justification}</p>
+                        </div>
+                    `;
+                });
+                suggestionsHTML += '</div>';
+                aiGapSuggestions.innerHTML = suggestionsHTML;
+                askAIGapBtn.style.display = 'none'; // Hide button after getting suggestions
+            });
+
+            // Set initial active tab and view
+            document.querySelector('.tab-item[data-target="dashboard-screen"]')?.click();
+            document.querySelector('.view-switcher-btn[data-view="week-view"]')?.click();
         });
     </script>
 </body>
