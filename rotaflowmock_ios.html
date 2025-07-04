@@ -85,6 +85,29 @@
             height: 28px;
             opacity: 0.7;
         }
+        /* Mobile-first adjustments for full-screen experience */
+        @media (max-width: 640px) {
+            body {
+                padding: 0;
+                background-color: #f7f8fc;
+            }
+            .ios-frame {
+                max-width: none;
+                height: 100vh; /* Fill the full viewport height */
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .ios-notch {
+                display: none; /* Hide the notch on actual devices */
+            }
+            .ios-header {
+                 padding-top: env(safe-area-inset-top, 20px); /* Adjust for device notch */
+            }
+            .ios-tab-bar {
+                 padding-bottom: env(safe-area-inset-bottom, 8px); /* Adjust for home indicator */
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-800 flex items-center justify-center min-h-screen p-4">
